@@ -43,3 +43,9 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+#faker (database filler)
+gem 'faker', '~> 1.9', '>= 1.9.3'
+
+#rake
+gem 'rake', '~> 12.3', '>= 12.3.2'

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  PetLost_Type: MyString
+  PetLost_Name: MyString
+  PetLost_Gender: MyString
+  PetLost_Size: MyString
+  Pet_Description: MyText
+  PetLost_Found: false
+
+two:
+  PetLost_Type: MyString
+  PetLost_Name: MyString
+  PetLost_Gender: MyString
+  PetLost_Size: MyString
+  Pet_Description: MyText
+  PetLost_Found: false
