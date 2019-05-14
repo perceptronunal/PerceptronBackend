@@ -12,7 +12,7 @@ class Pet < ApplicationRecord
 
     #associations
     has_many :interested_ins, dependent: :destroy
-    has_many :comments, as: :commentable :destroy
-    has_many :resources, as: :resourceable :destroy
+    has_many :comments, as: :commentable, dependent: :destroy
+    has_many :resources, as: :resourceable, dependent: :destroy
     
 end
