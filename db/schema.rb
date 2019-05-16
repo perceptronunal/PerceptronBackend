@@ -17,14 +17,11 @@ ActiveRecord::Schema.define(version: 2019_05_13_065220) do
 
   create_table "comments", force: :cascade do |t|
     t.text "Comment_Comment"
-    t.bigint "pet_id"
-    t.bigint "pet_lost_id"
-    t.bigint "post_id"
+    t.string "commenteable_type"
+    t.bigint "commenteable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["pet_id"], name: "index_comments_on_pet_id"
-    t.index ["pet_lost_id"], name: "index_comments_on_pet_lost_id"
-    t.index ["post_id"], name: "index_comments_on_post_id"
+    t.index ["commenteable_type", "commenteable_id"], name: "index_comments_on_commenteable_type_and_commenteable_id"
   end
 
   create_table "interested_ins", force: :cascade do |t|
@@ -53,7 +50,7 @@ ActiveRecord::Schema.define(version: 2019_05_13_065220) do
     t.string "PetLost_Name"
     t.string "PetLost_Gender"
     t.string "PetLost_Size"
-    t.text "Pet_Description"
+    t.text "PetLost_Description"
     t.boolean "PetLost_Found"
     t.bigint "user_id"
     t.datetime "created_at", null: false
@@ -68,7 +65,7 @@ ActiveRecord::Schema.define(version: 2019_05_13_065220) do
     t.integer "Pet_Age"
     t.string "Pet_Size"
     t.boolean "Pet_Sterilized"
-    t.boolean "Pet_vaccinated"
+    t.boolean "Pet_Vaccinated"
     t.text "Pet_Description"
     t.boolean "Pet_Adopted"
     t.datetime "created_at", null: false
@@ -87,18 +84,11 @@ ActiveRecord::Schema.define(version: 2019_05_13_065220) do
   create_table "resources", force: :cascade do |t|
     t.string "Resource_Type"
     t.string "Resource_Link"
-    t.bigint "pet_id"
-    t.bigint "user_id"
-    t.bigint "pet_lost_id"
-    t.bigint "post_id"
-    t.bigint "organization_id"
+    t.string "resourceable_type"
+    t.bigint "resourceable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["organization_id"], name: "index_resources_on_organization_id"
-    t.index ["pet_id"], name: "index_resources_on_pet_id"
-    t.index ["pet_lost_id"], name: "index_resources_on_pet_lost_id"
-    t.index ["post_id"], name: "index_resources_on_post_id"
-    t.index ["user_id"], name: "index_resources_on_user_id"
+    t.index ["resourceable_type", "resourceable_id"], name: "index_resources_on_resourceable_type_and_resourceable_id"
   end
 
   create_table "users", force: :cascade do |t|

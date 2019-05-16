@@ -7,7 +7,7 @@ one:
   Pet_Age: 1
   Pet_Size: MyString
   Pet_Sterilized: false
-  Pet_vaccinated: false
+  Pet_Vaccinated: false
   Pet_Description: MyText
   Pet_Adopted: false
 
@@ -18,6 +18,6 @@ two:
   Pet_Age: 1
   Pet_Size: MyString
   Pet_Sterilized: false
-  Pet_vaccinated: false
+  Pet_Vaccinated: false
   Pet_Description: MyText
   Pet_Adopted: false
