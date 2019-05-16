@@ -7,7 +7,7 @@ class CreatePets < ActiveRecord::Migration[5.2]
       t.integer :Pet_Age
       t.string :Pet_Size
       t.boolean :Pet_Sterilized
-      t.boolean :Pet_vaccinated
+      t.boolean :Pet_Vaccinated
       t.text :Pet_Description
       t.boolean :Pet_Adopted
 

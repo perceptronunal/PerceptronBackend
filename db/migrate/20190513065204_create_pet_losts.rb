@@ -5,7 +5,7 @@ class CreatePetLosts < ActiveRecord::Migration[5.2]
       t.string :PetLost_Name
       t.string :PetLost_Gender
       t.string :PetLost_Size
-      t.text :Pet_Description
+      t.text :PetLost_Description
       t.boolean :PetLost_Found
       t.references :user
 

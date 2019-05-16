@@ -12,7 +12,7 @@ class PetsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create pet" do
     assert_difference('Pet.count') do
-      post pets_url, params: { pet: { Pet_Adopted: @pet.Pet_Adopted, Pet_Age: @pet.Pet_Age, Pet_Description: @pet.Pet_Description, Pet_Gender: @pet.Pet_Gender, Pet_Name: @pet.Pet_Name, Pet_Size: @pet.Pet_Size, Pet_Sterilized: @pet.Pet_Sterilized, Pet_Type: @pet.Pet_Type, Pet_vaccinated: @pet.Pet_vaccinated } }, as: :json
+      post pets_url, params: { pet: { Pet_Adopted: @pet.Pet_Adopted, Pet_Age: @pet.Pet_Age, Pet_Description: @pet.Pet_Description, Pet_Gender: @pet.Pet_Gender, Pet_Name: @pet.Pet_Name, Pet_Size: @pet.Pet_Size, Pet_Sterilized: @pet.Pet_Sterilized, Pet_Type: @pet.Pet_Type, Pet_Vaccinated: @pet.Pet_Vaccinated } }, as: :json
     end
 
     assert_response 201
@@ -24,7 +24,7 @@ class PetsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update pet" do
-    patch pet_url(@pet), params: { pet: { Pet_Adopted: @pet.Pet_Adopted, Pet_Age: @pet.Pet_Age, Pet_Description: @pet.Pet_Description, Pet_Gender: @pet.Pet_Gender, Pet_Name: @pet.Pet_Name, Pet_Size: @pet.Pet_Size, Pet_Sterilized: @pet.Pet_Sterilized, Pet_Type: @pet.Pet_Type, Pet_vaccinated: @pet.Pet_vaccinated } }, as: :json
+    patch pet_url(@pet), params: { pet: { Pet_Adopted: @pet.Pet_Adopted, Pet_Age: @pet.Pet_Age, Pet_Description: @pet.Pet_Description, Pet_Gender: @pet.Pet_Gender, Pet_Name: @pet.Pet_Name, Pet_Size: @pet.Pet_Size, Pet_Sterilized: @pet.Pet_Sterilized, Pet_Type: @pet.Pet_Type, Pet_Vaccinated: @pet.Pet_Vaccinated } }, as: :json
     assert_response 200
   end
 
