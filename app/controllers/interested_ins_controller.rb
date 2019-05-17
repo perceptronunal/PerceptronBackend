@@ -46,6 +46,6 @@ class InterestedInsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def interested_in_params
-      params.require(:interested_in).permit(:Interest_Type)
+      params.require(:interested_in).permit(:Interest_Type, :user_id, :pet_id)
     end
 end

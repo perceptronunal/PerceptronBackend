@@ -63,6 +63,6 @@ class PetLostsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def pet_lost_params
-      params.require(:pet_lost).permit(:PetLost_Type, :PetLost_Name, :PetLost_Gender, :PetLost_Size, :PetLost_Description, :PetLost_Found)
+      params.require(:pet_lost).permit(:PetLost_Type, :PetLost_Name, :PetLost_Gender, :PetLost_Size, :PetLost_Description, :PetLost_Found, :user_id)
     end
 end
