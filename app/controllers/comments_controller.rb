@@ -15,7 +15,23 @@ class CommentsController < ApplicationController
 
   # POST /comments
   def create
-    @comment = Comment.new(comment_params)
+   
+    type = comment_params[:Comment_Type]
+    id = comment_params[:Comment_Id]
+
+    case type
+    when "post"
+      @post = Post.find(id)
+      @comment = @post.comments.new(comment_params2) 
+    when "pet_lost"
+      @pet_lost = PetLost.find(id)
+      @comment = @pet_lost.comments.new(comment_params2) 
+    when "pet"
+      @pet = Pet.find(id)
+      @comment = @pet.comments.new(comment_params2) 
+    else
+
+    end
 
     if @comment.save
       render json: @comment, status: :created, location: @comment
@@ -44,9 +60,25 @@ class CommentsController < ApplicationController
       @comment = Comment.find(params[:id])
     end
 
+    # def set_pet_lost
+    #   @pet_lost = PetLost.find(params[:id])
+    # end
+
+    # def set_pet
+    #   @pet = Pet.find(params[:id])
+    # end
+
+    # def set_post
+    #   @post = Post.find(params[:id])
+    # end
+
     # Only allow a trusted parameter "white list" through.
     def comment_params
-
-      params.require(:comment).permit(:Comment_Comment, :commenteable_type, :commenteable_id)
+      params.require(:comment).permit(:Comment_Type, :Comment_Id)
     end
+    
+    def comment_params2
+      params.require(:comment).permit(:Comment_Comment)
+    end
+
 end

@@ -35,14 +35,6 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-
-    #destroys every interest of an user before destroys user himself
-    #(referencial integrity from rails side)
-    @interested_in = InterestedIn.where(user_id: @user.id)
-    @interested_in.each do |int_in|
-      int_in.destroy
-    end
-
     @user.destroy
   end
 

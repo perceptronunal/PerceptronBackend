@@ -15,7 +15,28 @@ class ResourcesController < ApplicationController
 
   # POST /resources
   def create
-    @resource = Resource.new(resource_params)
+    type = resource_params[:Resource_Type2]
+    id = resource_params[:Resource_Id]
+
+    case type
+    when "post"
+      @post = Post.find(id)
+      @resource = @post.resources.new(resource_params2) 
+    when "pet_lost"
+      @pet_lost = PetLost.find(id)
+      @resource = @pet_lost.resources.new(resource_params2) 
+    when "pet"
+      @pet = Pet.find(id)
+      @resource = @pet.resources.new(resource_params2)
+    when "organization"
+      @organization = Organization.find(id)
+      @resource = @organization.resources.new(resource_params2) 
+    when "user"
+      @user = User.find(id)
+      @resource = @user.resources.new(resource_params2) 
+    else
+
+    end
 
     if @resource.save
       render json: @resource, status: :created, location: @resource
@@ -45,7 +66,11 @@ class ResourcesController < ApplicationController
     end
 
     # Only allow a trusted parameter "white list" through.
+    def resource_params2
+      params.require(:resource).permit(:Resource_Type, :Resource_Link)
+    end
+
     def resource_params
-      params.require(:resource).permit(:Resource_Type, :Resource_Link, :resourceable_type, :resourceable_id)
+      params.require(:resource).permit(:Resource_Type2, :Resource_Id)
     end
 end

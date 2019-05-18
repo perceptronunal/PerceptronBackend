@@ -35,20 +35,6 @@ class PostsController < ApplicationController
 
   # DELETE /posts/1
   def destroy
-    #destroys every comment of an post before destroys post himself
-    #(referencial integrity from rails side)
-    @comment = Comment.where(post_id: @post.id)
-    @comment.each do |tempcomment|
-      tempcomment.destroy
-    end
-
-    #destroys every resource of an post before destroys post himself
-    #(referencial integrity from rails side)
-    @resource = Resource.where(post_id: @post.id)
-    @resource.each do |tempresource|
-      tempresource.destroy
-    end
-
     @post.destroy
   end
 

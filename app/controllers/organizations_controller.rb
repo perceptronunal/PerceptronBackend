@@ -35,13 +35,6 @@ class OrganizationsController < ApplicationController
 
   # DELETE /organizations/1
   def destroy
-
-    #destroys every post of an organization before destroys organization himself
-    #(referencial integrity from rails side)
-    @post = Post.where(organization_id: @organization.id)
-    @post.each do |temppost|
-      temppost.destroy
-    end
     @organization.destroy
   end
 

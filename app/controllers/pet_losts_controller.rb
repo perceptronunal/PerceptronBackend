@@ -35,24 +35,7 @@ class PetLostsController < ApplicationController
 
   # DELETE /pet_losts/1
   def destroy
-    
-    #destroys every comment of an pet_lost before destroys pet_lost himself
-    #(referencial integrity from rails side)
-    @comment = Comment.where(pet_lost_id: @pet_lost.id)
-    @comment.each do |tempcomment|
-      tempcomment.destroy
-    end
-
-    #destroys every resource of an pet_lost before destroys pet_lost himself
-    #(referencial integrity from rails side)
-    @resource = Resource.where(pet_lost_id: @pet_lost.id)
-    @resource.each do |tempresource|
-      tempresource.destroy
-    end
-
-    @pet_lost.destroy
-
- 
+    @pet_lost.destroy 
   end
 
   private
