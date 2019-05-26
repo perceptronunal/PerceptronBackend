@@ -16,21 +16,17 @@ class CommentsController < ApplicationController
   # POST /comments
   def create
    
-    type = comment_params[:Comment_Type]
-    id = comment_params[:Comment_Id]
+    type = comment_params_poly[:Commenteable_Type]
+    id = comment_params_poly[:Commenteable_Id]
 
     case type
     when "post"
       @post = Post.find(id)
-      @comment = @post.comments.new(comment_params2) 
-    when "pet_lost"
-      @pet_lost = PetLost.find(id)
-      @comment = @pet_lost.comments.new(comment_params2) 
+      @comment = @post.comments.new(comment_params)
     when "pet"
       @pet = Pet.find(id)
-      @comment = @pet.comments.new(comment_params2) 
+      @comment = @pet.comments.new(comment_params)
     else
-
     end
 
     if @comment.save
@@ -60,25 +56,11 @@ class CommentsController < ApplicationController
       @comment = Comment.find(params[:id])
     end
 
-    # def set_pet_lost
-    #   @pet_lost = PetLost.find(params[:id])
-    # end
-
-    # def set_pet
-    #   @pet = Pet.find(params[:id])
-    # end
-
-    # def set_post
-    #   @post = Post.find(params[:id])
-    # end
-
-    # Only allow a trusted parameter "white list" through.
     def comment_params
-      params.require(:comment).permit(:Comment_Type, :Comment_Id)
-    end
-    
-    def comment_params2
       params.require(:comment).permit(:Comment_Comment)
     end
 
+    def comment_params_poly
+      params.require(:comment).permit(:Commenteable_Type, :Commenteable_Id)
+    end
 end

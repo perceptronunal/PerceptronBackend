@@ -4,11 +4,13 @@ class Organization < ApplicationRecord
     validates :Organization_Address, presence: true
     validates :Organization_Phone, presence: true
     validates :Organization_Email, presence: true
-    validates :Organization_Website, presence: true
-    validates :Organization_Description, presence: true
+    #validates :Organization_Website, presence: true
+    #validates :Organization_Description, presence: true
+    validates :Organization_Validation, presence: true
 
     #Asociations
     has_many :posts, dependent: :destroy
     has_many :resources, as: :resourceable, dependent: :destroy
+    has_many :connections, dependent: :destroy
 
 end

@@ -7,6 +7,7 @@ class CreateOrganizations < ActiveRecord::Migration[5.2]
       t.string :Organization_Email
       t.string :Organization_Website
       t.string :Organization_Description
+      t.boolean :Organization_Validation
 
       t.timestamps
     end

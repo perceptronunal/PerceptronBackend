@@ -89,7 +89,7 @@ Para nuestro proyecto diseñamos las siguientes entidades:
 
 - **User:** Es la entidad donde se encuentra el usuario quién va a utilizar la aplicación.
 
-- **Interested_In:** Es donde el usuario puede elegir entre adoptar o dar en adopción.
+- **Connection:** Es donde el usuario puede elegir entre adoptar, dar en adopción, estar interesado o reportar como perido.
 
 - **Pet:** Es donde están los registros de los animales (perros, gatos y conejos).
 
