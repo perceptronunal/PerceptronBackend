@@ -15,5 +15,14 @@ class Pet < ApplicationRecord
     has_many :connections, dependent: :destroy
     has_many :comments, as: :commenteable, dependent: :destroy
     has_many :resources, as: :resourceable, dependent: :destroy
+
+
+    def self.petsToAdopt
+        ActiveRecord::Base.connection.exec_query("
+                select pets.*
+                from connections inner join pets on pet_id = pets.id
+                where \"Pet_Visible\" = true and \"Connection_Type\" = 'Adoptar';
+            ")
+    end
     
 end

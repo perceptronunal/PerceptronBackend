@@ -3,8 +3,7 @@ class PetsController < ApplicationController
 
   # GET /pets
   def index
-    @pets = Pet.all
-
+    @pets = Pet.petsToAdopt
     render json: @pets
   end
 
