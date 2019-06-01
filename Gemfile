@@ -49,3 +49,6 @@ gem 'faker', '~> 1.9', '>= 1.9.3'
 
 #rake
 gem 'rake', '~> 12.3', '>= 12.3.2'
+
+#annotate 
+gem 'annotate'
