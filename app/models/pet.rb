@@ -37,11 +37,9 @@ class Pet < ApplicationRecord
 
 
     def self.petsToAdopt
-        ActiveRecord::Base.connection.exec_query("
-                select pets.*
-                from connections inner join pets on pet_id = pets.id
-                where \"Pet_Visible\" = true and \"Connection_Type\" = 'Adoptar';
-            ")
+        query = " select pets.*
+        from connections inner join pets on pet_id = pets.id
+        where \"Pet_Visible\" = true and \"Connection_Type\" = 'Adoptar' "
     end
     
 end

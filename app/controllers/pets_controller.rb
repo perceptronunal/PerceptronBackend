@@ -3,14 +3,9 @@ class PetsController < ApplicationController
 
   # GET /pets
   def index
-    query = " select pets.*
-            from connections inner join pets on pet_id = pets.id
-            where \"Pet_Visible\" = true and \"Connection_Type\" = 'Adoptar' "
-
-    @pets = Pet.paginate_by_sql(query, :page => @page, :per_page => 25)
-
+    
+    @pets = Pet.paginate_by_sql(Pet.petsToAdopt, :page => @page, :per_page => 25)
     # @pets = Pet.petsToAdopt
-
     render json: @pets
   end
 
