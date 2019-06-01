@@ -3,7 +3,7 @@ class ResourcesController < ApplicationController
 
   # GET /resources
   def index
-    @resources = Resource.all
+    @resources = Resource.paginate(page: params[:page], per_page:25)
 
     render json: @resources
   end

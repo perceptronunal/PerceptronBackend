@@ -3,7 +3,7 @@ class ConnectionsController < ApplicationController
 
   # GET /connections
   def index
-    @connections = Connection.all
+    @connections = Connection.paginate(page: params[:page], per_page:25)
 
     render json: @connections
   end

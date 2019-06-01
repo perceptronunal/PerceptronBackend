@@ -52,3 +52,6 @@ gem 'rake', '~> 12.3', '>= 12.3.2'
 
 #annotate 
 gem 'annotate'
+
+#will_paginate
+gem 'will_paginate', '~> 3.1.0'
