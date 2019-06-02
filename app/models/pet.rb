@@ -28,7 +28,7 @@ class Pet < ApplicationRecord
     #validates :Pet_Sterilized, presence: true
     #validates :Pet_Vaccinated, presence: true
     validates :Pet_Description, presence: true
-    validates :Pet_Visible, presence: true
+    #validates :Pet_Visible, presence: true
 
     #associations
     has_many :connections, dependent: :destroy
