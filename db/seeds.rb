@@ -52,7 +52,7 @@ end
 
 100.times do
     Connection.create(
-        Connection_Type: ["Adoptar", "Publicar", "Adoptado", "Encontrado"].sample,
+        Connection_Type: ["Adoptar", "Perdido", "Adoptado", "Encontrado"].sample,
         user_id: Faker::Number.between(1, 100),
         pet_id: Faker::Number.between(1, 100),
         organization_id: Faker::Number.between(1, 100)

@@ -19,4 +19,10 @@ class User < ApplicationRecord
         #associations
         has_many :connections, dependent: :destroy
         has_many :resources, as: :resourceable, dependent: :destroy
+
+        def self.allPublications
+                query = " select count(\"user_id\")
+                from users inner join connections on users.id = user_id
+                where \"Connection_Type\" = 'Adoptar' "
+        end
 end
