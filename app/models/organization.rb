@@ -15,6 +15,7 @@
 #
 
 class Organization < ApplicationRecord
+    has_secure_password
     #validations
     validates :Organization_Name, presence: true
     validates :Organization_Address, presence: true
@@ -23,10 +24,16 @@ class Organization < ApplicationRecord
     #validates :Organization_Website, presence: true
     #validates :Organization_Description, presence: true
     #validates :Organization_Validation, presence: true
+    validates :password, presence: true
 
     #Asociations
     has_many :posts, dependent: :destroy
     has_many :resources, as: :resourceable, dependent: :destroy
     has_many :connections, dependent: :destroy
 
+    #Authorization override
+    def self.from_token_request request
+        organization_email = request.params["auth"] && request.params["auth"]["Organization_Email"]
+        self.find_by Organization_Email: organization_email
+    end
 end

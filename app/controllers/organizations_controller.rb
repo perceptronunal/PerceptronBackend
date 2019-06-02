@@ -1,5 +1,6 @@
 class OrganizationsController < ApplicationController
   before_action :set_organization, only: [:show, :update, :destroy]
+  before_action :authenticate_user, only: [:show, :current]
 
   # GET /organizations
   def index
@@ -46,6 +47,6 @@ class OrganizationsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def organization_params
-      params.require(:organization).permit(:Organization_Name, :Organization_Address, :Organization_Phone, :Organization_Email, :Organization_Website, :Organization_Description, :Organization_Validation)
+      params.require(:organization).permit(:Organization_Name, :Organization_Address, :Organization_Phone, :Organization_Email, :Organization_Website, :Organization_Description, :Organization_Validation, :password)
     end
 end

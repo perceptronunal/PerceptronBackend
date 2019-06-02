@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 2019_05_13_065220) do
     t.string "Organization_Website"
     t.string "Organization_Description"
     t.boolean "Organization_Validation"
+    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -88,6 +89,7 @@ ActiveRecord::Schema.define(version: 2019_05_13_065220) do
     t.string "User_Email"
     t.string "User_Phone"
     t.string "User_City"
+    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
