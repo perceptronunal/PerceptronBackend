@@ -29,4 +29,11 @@ class Organization < ApplicationRecord
     has_many :resources, as: :resourceable, dependent: :destroy
     has_many :connections, dependent: :destroy
 
+    scope :Organization_Validation, -> { where(Organization_Validation: true) }
+
+    def self.allPublications
+        query = " select count(\"organization_id\")
+        from organizatons inner join posts on organizatons.id = organization_id "
+    end
+
 end

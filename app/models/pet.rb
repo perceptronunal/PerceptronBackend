@@ -35,9 +35,10 @@ class Pet < ApplicationRecord
     has_many :comments, as: :commenteable, dependent: :destroy
     has_many :resources, as: :resourceable, dependent: :destroy
 
+    scope :Pet_Visible, -> { where(Pet_Visible: true) }
 
     def self.petsToAdopt
-        query = " select pets.*
+        query = " select \"Pet_Name\", \"Pet_Gender\", \"Pet_Age\"
         from connections inner join pets on pet_id = pets.id
         where \"Pet_Visible\" = true and \"Connection_Type\" = 'Adoptar' "
     end
