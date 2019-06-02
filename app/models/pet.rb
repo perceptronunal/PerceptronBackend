@@ -39,7 +39,7 @@ class Pet < ApplicationRecord
     def self.petsToAdopt
         query = " select pets.*
         from connections inner join pets on pet_id = pets.id
-        where \"Pet_Visible\" = true and \"Connection_Type\" = 'Adoptar' "
+        where \"Pet_Visible\" = true and \"Connection_Type\" = 'Publicar' "
     end
     
 end
