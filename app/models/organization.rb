@@ -22,7 +22,7 @@ class Organization < ApplicationRecord
     validates :Organization_Email, presence: true
     #validates :Organization_Website, presence: true
     #validates :Organization_Description, presence: true
-    validates :Organization_Validation, presence: true
+    #validates :Organization_Validation, presence: true
 
     #Asociations
     has_many :posts, dependent: :destroy
