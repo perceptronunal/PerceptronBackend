@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :update, :destroy]
   before_action :authenticate_user, only: [:create, :update, :destroy, :current]
-  before_action :authenticate_organization, only: [:create, :update, :destroy, :current]
+  before_action :authenticate_organization, only: [:create, :update, :destroy, :current], unless: -> { !current_user.nil? }
 
   # GET /comments
   def index

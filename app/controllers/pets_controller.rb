@@ -1,7 +1,7 @@
 class PetsController < ApplicationController
   before_action :set_pet, only: [:show, :update, :destroy]
   before_action :authenticate_user, only: [:create, :update, :destroy, :current]
-  before_action :authenticate_organization, only: [:create, :update, :destroy, :current]
+  before_action :authenticate_organization, only: [:create, :update, :destroy, :current], unless: -> { !current_user.nil? }
 
   # GET /pets
   def index
@@ -18,6 +18,7 @@ class PetsController < ApplicationController
 
   # POST /pets
   def create
+    puts current_user[:User_Email]
     @pet = Pet.new(pet_params)
 
     if @pet.save

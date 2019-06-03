@@ -1,7 +1,7 @@
 class ResourcesController < ApplicationController
   before_action :set_resource, only: [:show, :update, :destroy]
   before_action :authenticate_user, only: [:create, :update, :destroy, :current]
-  before_action :authenticate_organization, only: [:create, :update, :destroy, :current]
+  before_action :authenticate_organization, only: [:create, :update, :destroy, :current], unless: -> { !current_user.nil? }
 
   # GET /resources
   def index
