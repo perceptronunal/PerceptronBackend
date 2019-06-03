@@ -1,4 +1,4 @@
-﻿![](https://lh6.googleusercontent.com/-Nw40S0GwKCTAF4bd60T4XgtQn9xSKqnhFdzX5aMsWRBuhqRMCWIKZ9XOL6qw0uG92J74QVrzNguvFHhyLBPbA32TxSYf362pxfhapXDVyxX11VZTOWy1DS4cWESG_lBr4_NCvJ6)
+﻿![](https://i.ibb.co/QfsYfkB/Happy-Pets.jpg)
 
 # PetsHappy
 
@@ -89,13 +89,11 @@ Para nuestro proyecto diseñamos las siguientes entidades:
 
 - **User:** Es la entidad donde se encuentra el usuario quién va a utilizar la aplicación.
 
-- **Connection:** Es donde el usuario puede elegir entre adoptar, dar en adopción, estar interesado o reportar como perido.
+- **connection:** Es donde el usuario puede elegir entre adoptar o dar en adopción.
 
 - **Pet:** Es donde están los registros de los animales (perros, gatos y conejos).
 
 - **Resource:** Es donde se encuentran alojados todos los archivos adjuntos (fotos y videos) que visualizan las mascotas.
-
-- **PetLost:** Es donde se encuentran las mascotas perdidas y que los usuarios encuentran.
 
 - **Comment:** Todos los comentarios asociados a los animales y publicaciones.
 
@@ -105,12 +103,30 @@ Para nuestro proyecto diseñamos las siguientes entidades:
 
   
 
+## El proyecto tiene implementado las siguientes gemas:
+
+**will_paginate:**  https://github.com/mislav/will_paginate
+Esta gema nos permite enviar los datos parcialmente, en paginas como las del buscador de google.
+
+**annotate:**  https://github.com/ctran/annotate_models
+Esta gema funciona en conjunto con **will_paginate**
+
+**active_model_serializers:** https://github.com/rails-api/active_model_serializers
+Esta gema nos permite establecer que datos queremos enviar del modelo como tambien su formato (JSON)
+
+**knock:** https://github.com/nsarno/knock
+Esta gema es para la Autenticación por TOKEN.
+
 ## Archivos
 
 En el presente repositorio, se encuentran las imágenes, base de datos (modelo entidad-relación) y videos de los animales y usuarios registrados.
 
-  
-  
+## Notas
+
+# Problema N+1
+
+Este problema ocurre cuando el código necesita cargar los hijos de una relación padre-hijo (los "muchos" en el "uno a muchos"). La mayoría de los ORM tienen habilitada la carga diferida de forma predeterminada, por lo que se emiten consultas para el registro principal y luego una consulta para CADA registro secundario. Como puede esperar, hacer consultas N + 1 en lugar de una sola consulta inundará su base de datos con consultas, que es algo que podemos y debemos evitar.
+
 
 ## Desarrolladores
 
@@ -143,6 +159,11 @@ Proyecto de Ingeniería de Software 2 - 2019-1
 - [https://www.ruby-lang.org/en/](https://www.ruby-lang.org/en/)
 
 - [https://www.postgresql.org/docs/](https://www.postgresql.org/docs/)
+
+- [https://www.sitepoint.com/silver-bullet-n1-problem/] (https://www.sitepoint.com/silver-bullet-n1-problem/)
+
+- [https://blog.appsignal.com/2018/04/24/active-record-performance-the-n+1-queries-antipattern.html] (https://blog.appsignal.com/2018/04/24/active-record-performance-the-n+1-queries-antipattern.html)
+
 
   
   
