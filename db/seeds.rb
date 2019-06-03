@@ -13,7 +13,8 @@
         User_Name: Faker::Name.name_with_middle,
         User_Email: Faker::Internet.unique.free_email,
         User_Phone: Faker::PhoneNumber.cell_phone,
-        User_City: Faker::Nation.capital_city
+        User_City: Faker::Nation.capital_city,
+        password: Faker::Games::LeagueOfLegends.champion
     )
 
 end
@@ -45,14 +46,15 @@ end
         Organization_Email: Faker::Internet.unique.free_email,
         Organization_Website: Faker::Internet.url,
         Organization_Description: Faker::Lorem.word,
-        Organization_Validation: Faker::Boolean.boolean
+        Organization_Validation: Faker::Boolean.boolean,
+        password: Faker::Games::LeagueOfLegends.champion
     )
 
 end
 
 100.times do
     Connection.create(
-        Connection_Type: ["Adoptar", "Perdido", "Adoptado", "Encontrado"].sample,
+        Connection_Type: ["Adoptar", "Publicar", "Adoptado", "Encontrado", "Perdido", "Interesado"].sample,
         user_id: Faker::Number.between(1, 100),
         pet_id: Faker::Number.between(1, 100),
         organization_id: Faker::Number.between(1, 100)

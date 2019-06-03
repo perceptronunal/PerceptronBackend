@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  post 'organization_token' => 'organization_token#create'
+  post 'user_token' => 'user_token#create'
   resources :organizations
   resources :resources
   resources :pets
