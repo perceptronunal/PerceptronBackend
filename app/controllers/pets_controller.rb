@@ -7,6 +7,7 @@ class PetsController < ApplicationController
   def index
     
     @pets = Pet.paginate_by_sql(Pet.petsToAdopt, :page => @page, :per_page => 25)
+    #puts @pets[:Pet_Size]
     #@pets = Pet.petsToAdopt
     render json: @pets
   end

@@ -23,7 +23,7 @@ class Pet < ApplicationRecord
     validates :Pet_Name, presence: true
     validates :Pet_Gender, presence: true
     #validates :Pet_Age, presence: true
-    validates :Pet_Size, presence: true
+    #validates :Pet_Size, presence: true
     validates :Pet_Color, presence: true
     #validates :Pet_Sterilized, presence: true
     #validates :Pet_Vaccinated, presence: true
