@@ -3,6 +3,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.4.5'
 
+gem 'active_model_serializers'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.3'
 # Use postgresql as the database for Active Record
@@ -49,3 +51,12 @@ gem 'faker', '~> 1.9', '>= 1.9.3'
 
 #rake
 gem 'rake', '~> 12.3', '>= 12.3.2'
+
+#annotate 
+gem 'annotate'
+
+#will_paginate
+gem 'will_paginate', '~> 3.1.0'
+gem "knock", "~> 2.1"
+
+gem "bcrypt", "~> 3.1"

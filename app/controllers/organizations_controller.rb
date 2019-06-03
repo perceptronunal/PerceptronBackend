@@ -1,9 +1,10 @@
 class OrganizationsController < ApplicationController
   before_action :set_organization, only: [:show, :update, :destroy]
+  before_action :authenticate_organization, only: [:update, :destroy, :current]
 
   # GET /organizations
   def index
-    @organizations = Organization.all
+    @organizations = Organization.paginate(page: params[:page], per_page:25)
 
     render json: @organizations
   end
@@ -46,6 +47,6 @@ class OrganizationsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def organization_params
-      params.require(:organization).permit(:Organization_Name, :Organization_Address, :Organization_Phone, :Organization_Email, :Organization_Website, :Organization_Description)
+      params.require(:organization).permit(:Organization_Name, :Organization_Address, :Organization_Phone, :Organization_Email, :Organization_Website, :Organization_Description, :Organization_Validation, :password)
     end
 end

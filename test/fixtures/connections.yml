@@ -1,11 +1,11 @@
 # == Schema Information
 #
-# Table name: posts
+# Table name: connections
 #
 #  id              :bigint           not null, primary key
-#  Post_Title      :string
-#  Post_Content    :text
-#  Post_Tag        :string
+#  Connection_Type :string
+#  pet_id          :bigint
+#  user_id         :bigint
 #  organization_id :bigint
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -14,9 +14,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  Post_Title: MyString
-  Post_Content: MyText
+  Connection_Type: MyString
 
 two:
-  Post_Title: MyString
-  Post_Content: MyText
+  Connection_Type: MyString

@@ -24,14 +24,16 @@ ActiveRecord::Schema.define(version: 2019_05_13_065220) do
     t.index ["commenteable_type", "commenteable_id"], name: "index_comments_on_commenteable_type_and_commenteable_id"
   end
 
-  create_table "interested_ins", force: :cascade do |t|
-    t.string "Interest_Type"
-    t.bigint "user_id"
+  create_table "connections", force: :cascade do |t|
+    t.string "Connection_Type"
     t.bigint "pet_id"
+    t.bigint "user_id"
+    t.bigint "organization_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["pet_id"], name: "index_interested_ins_on_pet_id"
-    t.index ["user_id"], name: "index_interested_ins_on_user_id"
+    t.index ["organization_id"], name: "index_connections_on_organization_id"
+    t.index ["pet_id"], name: "index_connections_on_pet_id"
+    t.index ["user_id"], name: "index_connections_on_user_id"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -41,21 +43,10 @@ ActiveRecord::Schema.define(version: 2019_05_13_065220) do
     t.string "Organization_Email"
     t.string "Organization_Website"
     t.string "Organization_Description"
+    t.boolean "Organization_Validation"
+    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "pet_losts", force: :cascade do |t|
-    t.string "PetLost_Type"
-    t.string "PetLost_Name"
-    t.string "PetLost_Gender"
-    t.string "PetLost_Size"
-    t.text "PetLost_Description"
-    t.boolean "PetLost_Found"
-    t.bigint "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_pet_losts_on_user_id"
   end
 
   create_table "pets", force: :cascade do |t|
@@ -64,10 +55,11 @@ ActiveRecord::Schema.define(version: 2019_05_13_065220) do
     t.string "Pet_Gender"
     t.integer "Pet_Age"
     t.string "Pet_Size"
+    t.string "Pet_Color"
     t.boolean "Pet_Sterilized"
     t.boolean "Pet_Vaccinated"
     t.text "Pet_Description"
-    t.boolean "Pet_Adopted"
+    t.boolean "Pet_Visible"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -75,6 +67,7 @@ ActiveRecord::Schema.define(version: 2019_05_13_065220) do
   create_table "posts", force: :cascade do |t|
     t.string "Post_Title"
     t.text "Post_Content"
+    t.string "Post_Tag"
     t.bigint "organization_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -96,6 +89,7 @@ ActiveRecord::Schema.define(version: 2019_05_13_065220) do
     t.string "User_Email"
     t.string "User_Phone"
     t.string "User_City"
+    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

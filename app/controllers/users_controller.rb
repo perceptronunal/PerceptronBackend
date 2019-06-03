@@ -1,9 +1,10 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
+  before_action :authenticate_user, only: [:update, :destroy, :current]
 
   # GET /users
   def index
-    @users = User.all
+    @users = User.paginate(page: params[:page], per_page:25)
 
     render json: @users
   end
@@ -47,6 +48,6 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:User_Name, :User_Email, :User_Phone, :User_City)
+      params.require(:user).permit(:User_Name, :User_Email, :User_Phone, :User_City, :password)
     end
 end

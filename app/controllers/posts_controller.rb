@@ -1,9 +1,10 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :update, :destroy]
+  before_action :authenticate_organization, only: [:create, :update, :destroy, :current]
 
   # GET /posts
   def index
-    @posts = Post.all
+    @posts = Post.paginate(page: params[:page], per_page:25)
 
     render json: @posts
   end
@@ -46,6 +47,6 @@ class PostsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def post_params
-      params.require(:post).permit(:Post_Title, :Post_Content, :organization_id)
+      params.require(:post).permit(:Post_Title, :Post_Content, :Post_Tag, :organization_id)
     end
 end

@@ -1,9 +1,11 @@
 class ResourcesController < ApplicationController
   before_action :set_resource, only: [:show, :update, :destroy]
+  before_action :authenticate_user, only: [:create, :update, :destroy, :current]
+  before_action :authenticate_organization, only: [:create, :update, :destroy, :current], unless: -> { !current_user.nil? }
 
   # GET /resources
   def index
-    @resources = Resource.all
+    @resources = Resource.paginate(page: params[:page], per_page:25)
 
     render json: @resources
   end
@@ -15,25 +17,22 @@ class ResourcesController < ApplicationController
 
   # POST /resources
   def create
-    type = resource_params[:Resource_Type2]
-    id = resource_params[:Resource_Id]
-
+    type = resource_params_poly[:Resourceable_Type]
+    id = resource_params_poly[:Resourceable_Id]
+    
     case type
     when "post"
       @post = Post.find(id)
-      @resource = @post.resources.new(resource_params2) 
-    when "pet_lost"
-      @pet_lost = PetLost.find(id)
-      @resource = @pet_lost.resources.new(resource_params2) 
+      @resource = @post.resources.new(resource_params) 
     when "pet"
       @pet = Pet.find(id)
-      @resource = @pet.resources.new(resource_params2)
+      @resource = @pet.resources.new(resource_params)
     when "organization"
       @organization = Organization.find(id)
-      @resource = @organization.resources.new(resource_params2) 
+      @resource = @organization.resources.new(resource_params) 
     when "user"
       @user = User.find(id)
-      @resource = @user.resources.new(resource_params2) 
+      @resource = @user.resources.new(resource_params)
     else
 
     end
@@ -47,7 +46,7 @@ class ResourcesController < ApplicationController
 
   # PATCH/PUT /resources/1
   def update
-    if @resource.update(resource_params)
+    if @resource.update(resource_params_poly)
       render json: @resource
     else
       render json: @resource.errors, status: :unprocessable_entity
@@ -66,11 +65,11 @@ class ResourcesController < ApplicationController
     end
 
     # Only allow a trusted parameter "white list" through.
-    def resource_params2
+    def resource_params
       params.require(:resource).permit(:Resource_Type, :Resource_Link)
     end
 
-    def resource_params
-      params.require(:resource).permit(:Resource_Type2, :Resource_Id)
+    def resource_params_poly
+      params.require(:resource).permit(:Resourceable_Type, :Resourceable_Id)
     end
 end

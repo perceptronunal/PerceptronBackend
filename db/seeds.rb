@@ -13,53 +13,54 @@
         User_Name: Faker::Name.name_with_middle,
         User_Email: Faker::Internet.unique.free_email,
         User_Phone: Faker::PhoneNumber.cell_phone,
-        User_City: Faker::Nation.capital_city
+        User_City: Faker::Nation.capital_city,
+        password: Faker::Games::LeagueOfLegends.champion
     )
 
+end
+
+
+100.times do
     Pet.create(
         # 0 = dog, 1 = cat, 2 = rabbit
-        Pet_Type: Faker::Number.between(0,2), 
+        Pet_Type: ["Perro", "Gato"].sample, 
         Pet_Name: Faker::Creature::Dog.name, 
         Pet_Gender: Faker::Creature::Dog.gender, 
         # meses
         Pet_Age: Faker::Number.between(1,96), 
+        Pet_Color: Faker::Color.color_name,
         Pet_Size: Faker::Creature::Dog.size, 
         Pet_Sterilized: Faker::Boolean.boolean,
         Pet_Vaccinated: Faker::Boolean.boolean,
         Pet_Description: Faker::Creature::Dog.meme_phrase,
-        Pet_Adopted: Faker::Boolean.boolean
+        Pet_Visible: Faker::Boolean.boolean
     )
-
-   
 
 end
 
 100.times do
-    
-    InterestedIn.create(
-        #Interest_type should be edited
-        #
-        Interest_Type: Faker::Creature::Animal.name,
-        user_id: Faker::Number.between(1, 100),
-        pet_id: Faker::Number.between(1, 100)
-    )
-    
-end
-
-100.times do
-
-
     Organization.create(
         Organization_Name: Faker::Name.name_with_middle,
         Organization_Address: Faker::Address.full_address,
         Organization_Phone: Faker::PhoneNumber.cell_phone,
         Organization_Email: Faker::Internet.unique.free_email,
         Organization_Website: Faker::Internet.url,
-        Organization_Description: Faker::Lorem.word
+        Organization_Description: Faker::Lorem.word,
+        Organization_Validation: Faker::Boolean.boolean,
+        password: Faker::Games::LeagueOfLegends.champion
     )
+
 end
 
+100.times do
+    Connection.create(
+        Connection_Type: ["Adoptar", "Publicar", "Adoptado", "Encontrado", "Perdido", "Interesado"].sample,
+        user_id: Faker::Number.between(1, 100),
+        pet_id: Faker::Number.between(1, 100),
+        organization_id: Faker::Number.between(1, 100)
+    )
 
+end
 
 100.times do
     Post.create(
@@ -67,48 +68,11 @@ end
         Post_Title: Faker::Lorem.sentence,
         Post_Content: Faker::Lorem.paragraphs,
     )
-
-    PetLost.create(
-        user_id: Faker::Number.between(1, 100),
-        PetLost_Type: Faker::Number.between(0,2),
-        PetLost_Name: Faker::Creature::Dog.name,
-        PetLost_Gender: Faker::Creature::Dog.gender,
-        # meses
-        PetLost_Size: Faker::Creature::Dog.size,
-        PetLost_Description: Faker::Creature::Dog.meme_phrase,
-        PetLost_Found: Faker::Boolean.boolean
-    )
+    
 end
 
 100.times do
-    
-    
-    
-    case rand(1..3)
-    when 1
-        Comment.create(
-            Comment_Comment: Faker::Lorem.paragraph,
-            commenteable_type: Pet,
-            commenteable_id: Faker::Number.between(1, 100)
-        )
-    when 2
-        Comment.create(
-            Comment_Comment: Faker::Lorem.paragraph,
-            commenteable_type: PetLost,
-            commenteable_id: Faker::Number.between(1, 100)
-        )
-    when 3
-        Comment.create(
-            Comment_Comment: Faker::Lorem.paragraph,
-            commenteable_type: Post,
-            commenteable_id: Faker::Number.between(1, 100)
-        )
-    else
-        puts "we're fucked!"
-    end
-        
-        
-    case rand(1..5)
+    case rand(1..4)
     when 1
         Resource.create(
             
@@ -122,7 +86,7 @@ end
             
             Resource_Type: Faker::Lorem.word,
             Resource_Link: Faker::Internet.url,
-            resourceable_type: PetLost,
+            resourceable_type: Post,
             resourceable_id: Faker::Number.between(1, 100) 
         )
     when 3
@@ -130,18 +94,10 @@ end
             
             Resource_Type: Faker::Lorem.word,
             Resource_Link: Faker::Internet.url,
-            resourceable_type: Post,
-            resourceable_id: Faker::Number.between(1, 100) 
-        )
-    when 4
-        Resource.create(
-            
-            Resource_Type: Faker::Lorem.word,
-            Resource_Link: Faker::Internet.url,
             resourceable_type: User,
             resourceable_id: Faker::Number.between(1, 100) 
         )
-    when 5
+    when 4
         Resource.create(
             
             Resource_Type: Faker::Lorem.word,
@@ -150,7 +106,25 @@ end
             resourceable_id: Faker::Number.between(1, 100) 
         )
     else
-        puts "we're fucked!"
+        puts "error"
     end
-        
+end
+
+100.times do
+    case rand(1..2)
+    when 1
+        Comment.create(
+            Comment_Comment: Faker::Lorem.paragraph,
+            commenteable_type: Pet,
+            commenteable_id: Faker::Number.between(1, 100)
+        )
+    when 2
+        Comment.create(
+            Comment_Comment: Faker::Lorem.paragraph,
+            commenteable_type: Post,
+            commenteable_id: Faker::Number.between(1, 100)
+        )
+    else
+        puts "error"
+    end
 end
