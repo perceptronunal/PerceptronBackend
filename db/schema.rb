@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_13_065220) do
+ActiveRecord::Schema.define(version: 2019_06_08_233428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,19 +21,20 @@ ActiveRecord::Schema.define(version: 2019_05_13_065220) do
     t.bigint "commenteable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["commenteable_type", "commenteable_id"], name: "index_comments_on_commenteable_type_and_commenteable_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "connections", force: :cascade do |t|
     t.string "Connection_Type"
     t.bigint "pet_id"
-    t.bigint "user_id"
-    t.bigint "organization_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["organization_id"], name: "index_connections_on_organization_id"
+    t.string "connectable_type"
+    t.bigint "connectable_id"
+    t.index ["connectable_type", "connectable_id"], name: "index_connections_on_connectable_type_and_connectable_id"
     t.index ["pet_id"], name: "index_connections_on_pet_id"
-    t.index ["user_id"], name: "index_connections_on_user_id"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -94,4 +95,5 @@ ActiveRecord::Schema.define(version: 2019_05_13_065220) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "comments", "users"
 end

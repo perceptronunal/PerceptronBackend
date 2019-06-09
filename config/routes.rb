@@ -3,10 +3,29 @@ Rails.application.routes.draw do
   post 'user_token' => 'user_token#create'
   resources :organizations
   resources :resources
-  resources :pets
+  resources :pets do
+    member do
+      get 'comments', action: :comments, controller: 'pets'
+      get 'adopt', action: :adopt, controller: 'pets'
+      post 'comments', action: :create_comments, controller: 'pets'     
+    end
+    collection do
+      get 'publications', action: :publications, controller: 'pets'
+      get 'losts', action: :losts, controller: 'pets'
+    end
+  end
   resources :comments
-  resources :posts
+  resources :posts do
+    member do
+      get 'comments', action: :comments, controller: 'posts'
+      post 'comments', action: :create_comments, controller: 'posts'
+    end
+  end
   resources :connections
-  resources :users
+  resources :users do
+    member do
+      get 'likes', action: :likes, controller: 'users'
+    end
+  end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

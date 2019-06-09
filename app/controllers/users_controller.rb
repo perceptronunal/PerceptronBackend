@@ -39,6 +39,10 @@ class UsersController < ApplicationController
     @user.destroy
   end
 
+  def likes
+    @users = User.paginate_by_sql(User.usersToLikes(params[:id]), :page => @page, :per_page => 70)
+    render json: @users
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

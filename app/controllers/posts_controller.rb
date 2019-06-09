@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :update, :destroy]
+  before_action :set_post, only: [:show, :update, :destroy, :comments]
   before_action :authenticate_organization, only: [:create, :update, :destroy, :current]
 
   # GET /posts
@@ -39,6 +39,20 @@ class PostsController < ApplicationController
     @post.destroy
   end
 
+  def comments
+    #post = Post.find(params[:id])
+    render json: post.comments
+  end
+  
+  def create_comments
+    comment = Comment.new(comment_params)
+    if comment.save
+      render json: comment, status: :created, location: comment
+    else
+      render json: comment.errors, status: :unprocessable_entity
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
@@ -49,4 +63,9 @@ class PostsController < ApplicationController
     def post_params
       params.require(:post).permit(:Post_Title, :Post_Content, :Post_Tag, :organization_id)
     end
+
+    def comment_params
+      params.require(:comment).permit(:Comment_Comment, :commenteable_type, :commenteable_id, :user_id)
+    end
+
 end

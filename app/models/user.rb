@@ -19,8 +19,9 @@ class User < ApplicationRecord
     validates :password, presence: true#, length: { minimum: 6 }
 
     #associations
-    has_many :connections, dependent: :destroy
     has_many :resources, as: :resourceable, dependent: :destroy
+    has_many :comments, dependent: :destroy
+    has_many :connections, as: :commenteable, dependent: :destroy
     
     def self.allPublications
         query = " select count(\"user_id\")
@@ -32,5 +33,10 @@ class User < ApplicationRecord
     def self.from_token_request request
         user_email = request.params["auth"] && request.params["auth"]["User_Email"]
         self.find_by User_Email: user_email
+    end
+
+    def self.usersToLikes(id)
+        query = "select * from connections 
+        where \"Connection_Type\" = 'Interesado' and \"connectable_id\" = #{id}"
     end
 end

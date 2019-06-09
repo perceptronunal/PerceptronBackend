@@ -5,9 +5,10 @@ class CommentsController < ApplicationController
 
   # GET /comments
   def index
-    @comments = Comment.paginate(page: params[:page], per_page:25)
-
-    render json: @comments
+    commenteable = Pet.find(params[:id])
+    comments = commenteable.comments.paginate(page: params[:page], per_page:25)
+    #@comments = Comment.paginate(page: params[:page], per_page:25)
+    render json: comments
   end
 
   # GET /comments/1
