@@ -38,9 +38,20 @@ class Pet < ApplicationRecord
     scope :Pet_Visible, -> { where(Pet_Visible: true) }
 
     def self.petsToAdopt
-        query = " select \"Pet_Name\", \"Pet_Gender\", \"Pet_Age\"
+        query = " select pets.id, \"Pet_Name\", \"Pet_Gender\", \"Pet_Age\"
         from connections inner join pets on pet_id = pets.id
         where \"Pet_Visible\" = true and \"Connection_Type\" = 'Publicar' "
+    end
+
+    def self.petsToFind
+        query = " select pets.id, \"Pet_Name\", \"Pet_Gender\", \"Pet_Age\"
+        from connections inner join pets on pet_id = pets.id
+        where \"Pet_Visible\" = true and \"Connection_Type\" = 'Perdido' "
+    end
+
+    def self.waitToAdopt(id)
+        query = " select * from connections 
+        where \"pet_id\" = #{id} and \"Connection_Type\" = 'Adoptar' "
     end
     
 end
