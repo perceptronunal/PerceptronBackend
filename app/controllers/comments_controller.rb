@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :update, :destroy]
-  before_action :authenticate_user, only: [:create, :update, :destroy, :current]
-  before_action :authenticate_organization, only: [:create, :update, :destroy, :current], unless: -> { !current_user.nil? }
+  before_action :authenticate_user, only: [:create, :update, :destroy]
+  before_action :authenticate_organization, only: [:create, :update, :destroy], unless: -> { !current_user.nil? }
 
   # GET /comments
   def index
@@ -41,15 +41,22 @@ class CommentsController < ApplicationController
 
   # PATCH/PUT /comments/1
   def update
-    if @comment.update(comment_params)
-      render json: @comment
+   
+    if current_user[:id] == @comment[:user_id] 
+      if @comment.update(comment_params)
+        render json: @comment
+      else
+        render json: @comment.errors, status: :unprocessable_entity
+      end
     else
+      puts "Unauthorized access"
       render json: @comment.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /comments/1
   def destroy
+    ###create visible fields. ### 
     @comment.destroy
   end
 

@@ -1,13 +1,18 @@
 Rails.application.routes.draw do
   post 'organization_token' => 'organization_token#create'
   post 'user_token' => 'user_token#create'
+  get 'users/current' => 'users#current'
   resources :organizations
   resources :resources
   resources :pets do
     member do
       get 'comments', action: :comments, controller: 'pets'
       get 'adopt', action: :adopt, controller: 'pets'
-      post 'comments', action: :create_comments, controller: 'pets'     
+      post 'comments', action: :create_comments, controller: 'pets'
+      post 'interest', action: :create_interest, controller: 'pets'
+      post 'adopt', action: :create_adoption, controller: 'pets'   
+      post 'adopted', action: :confirm_adoption, controller: 'pets' 
+      post 'found', action: :found, controller: 'pets' 
     end
     collection do
       get 'publications', action: :publications, controller: 'pets'

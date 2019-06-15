@@ -1,7 +1,7 @@
 class PetsController < ApplicationController
-  before_action :set_pet, only: [:show, :update, :destroy, :comments]
-  before_action :authenticate_user, only: [:create, :update, :destroy, :current]
-  before_action :authenticate_organization, only: [:create, :update, :destroy, :current], unless: -> { !current_user.nil? }
+  before_action :set_pet, only: [:show, :update, :destroy, :comments, :create_interest]
+  before_action :authenticate_user, only: [:create, :show, :update, :destroy]
+  before_action :authenticate_organization, only: [:create, :update, :destroy], unless: -> { !current_user.nil? }
 
   # GET /pets
   def index
@@ -13,29 +13,49 @@ class PetsController < ApplicationController
 
   # GET /pets/1
   def show
-    render json: @pet
+    #render json: @pet
+    respond_to do |format|
+      format.json {render json: @pet}
+      format.pdf do
+        pdf = PetPdf.new(current_user[:id], adopter[:user_id])
+        send_data pdf.render,
+          filename: "contrato.pdf",
+          type: 'application/pdf',
+          disposition: 'inline'
+      end
+    end
   end
 
   # POST /pets
   def create
-    puts current_user[:User_Email]
+    
     @pet = Pet.new(pet_params)
 
     if @pet.save
+
+      if(!current_user.nil?)
+        @connection = Connection.new(Connection_Type: request_parameter[:Connection_Type], pet_id: @pet[:id], connectable_type: User, connectable_id: current_user[:id])
+      else
+        @connection = Connection.new(Connection_Type: request_parameter[:Connection_Type], pet_id: @pet[:id], connectable_type: Organization, connectable_id: current_organization[:id])
+      end
+      @connection.save
       render json: @pet, status: :created, location: @pet
     else
       render json: @pet.errors, status: :unprocessable_entity
     end
+    
   end
 
   # PATCH/PUT /pets/1
   def update
-    if @pet.update(pet_params)
-      render json: @pet
-    else
-      render json: @pet.errors, status: :unprocessable_entity
+    if  (Connection.find_by(pet_id: @pet[:id])[:connectable_id] == current_user[:id] && Connection.find_by(pet_id: @pet[:id])[:connectable_type] == "User") || (Connection.find_by(pet_id: @pet[:id])[:connectable_id] == current_organization[:id] && Connection.find_by(pet_id: @pet[:id])[:connectable_type] == "Organization")
+      if @pet.update(pet_params)
+        render json: @pet
+      else
+        render json: @pet.errors, status: :unprocessable_entity
+      end
     end
-  end
+end
 
   # DELETE /pets/1
   def destroy
@@ -72,6 +92,38 @@ class PetsController < ApplicationController
     render json: @users
   end
 
+  def create_interest
+    @connection = Connection.new(Connection_Type: "Interesado", pet_id: @pet[:id], connectable_type: User, connectable_id: current_user[:id])
+    @connection.save
+  end
+
+  def create_adoption
+    @connection = Connection.new(Connection_Type: "Adoptar", pet_id: @pet[:id], connectable_type: User, connectable_id: current_user[:id])
+    @connection.save
+  end
+
+  def confirm_adoption
+
+    @connection = Connection.new(Connection_Type: "Adoptado", pet_id: @pet[:id], connectable_type: User, connectable_id: adopter[:user_id])
+    @connection.save
+
+    if @pet.update(Pet_Visible: false)
+      render json: @pet
+    else
+      render json: @pet.errors, status: :unprocessable_entity
+    end
+
+  end
+
+  def found
+    if(!current_user.nil?)
+      @connection = Connection.new(Connection_Type: "Encontrado", pet_id: @pet[:id], connectable_type: User, connectable_id: current_user[:id])
+    else
+      @connection = Connection.new(Connection_Type: "Encontrado", pet_id: @pet[:id], connectable_type: Organization, connectable_id: current_organization[:id])
+    end
+    @connection.save
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_pet
@@ -81,6 +133,14 @@ class PetsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def pet_params
       params.require(:pet).permit(:Pet_Type, :Pet_Name, :Pet_Gender, :Pet_Age, :Pet_Size, :Pet_Color, :Pet_Sterilized, :Pet_Vaccinated, :Pet_Description, :Pet_Visible)
+    end
+
+    def request_parameter
+      params.require(:pet).permit(:Connection_Type)
+    end
+
+    def adopter
+      params.require(:pet).permit(:user_id)
     end
 
     def comment_params

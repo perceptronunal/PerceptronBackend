@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :update, :destroy, :comments]
-  before_action :authenticate_organization, only: [:create, :update, :destroy, :current]
+  before_action :authenticate_organization, only: [:create, :update, :destroy]
 
   # GET /posts
   def index
@@ -27,10 +27,12 @@ class PostsController < ApplicationController
 
   # PATCH/PUT /posts/1
   def update
-    if @post.update(post_params)
-      render json: @post
-    else
-      render json: @post.errors, status: :unprocessable_entity
+    if current_organization[:id] == @organization[:organization_id] 
+      if @post.update(post_params)
+        render json: @post
+      else
+        render json: @post.errors, status: :unprocessable_entity
+      end
     end
   end
 
