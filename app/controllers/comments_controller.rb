@@ -8,32 +8,18 @@ class CommentsController < ApplicationController
     commenteable = Pet.find(params[:id])
     comments = commenteable.comments.paginate(page: params[:page], per_page:25)
     #@comments = Comment.paginate(page: params[:page], per_page:25)
-    render json: comments
+    render json: comments, serializar: CommentSerializer
   end
 
   # GET /comments/1
   def show
-    render json: @comment
+    render json: comments, serializar: CommentSerializer
   end
 
   # POST /comments
   def create
-
-    type = comment_params_poly[:Commenteable_Type]
-    id = comment_params_poly[:Commenteable_Id]
-
-    case type
-    when "post"
-      @post = Post.find(id)
-      @comment = @post.comments.new(comment_params)
-    when "pet"
-      @pet = Pet.find(id)
-      @comment = @pet.comments.new(comment_params)
-    else
-    end
-
     if @comment.save
-      render json: @comment, status: :created, location: @comment
+      render json: @comment, status: :created, location: @comment, serializar: CommentSerializer
     else
       render json: @comment.errors, status: :unprocessable_entity
     end
@@ -44,7 +30,7 @@ class CommentsController < ApplicationController
    
     if @user.id == @comment[:user_id] 
       if @comment.update(comment_params)
-        render json: @comment
+        render json: @comment, serializar: CommentSerializer
       else
         render json: @comment.errors, status: :unprocessable_entity
       end

@@ -10,14 +10,14 @@ class PetsController < ApplicationController
     @pets = Pet.paginate_by_sql(Pet.petsToAdopt, :page => @page, :per_page => 25)
     #puts @pets[:Pet_Size]
     #@pets = Pet.petsToAdopt
-    render json: @pets
+    render :json => @pets.to_json
   end
 
   # GET /pets/1
   def show
     #render json: @pet
     respond_to do |format|
-      format.json {render json: @pet}
+      format.json {render json: @pet, serializer: PetSerializer}
       format.pdf do
         pdf = PetPdf.new(@user.id, adopter[:user_id])
         send_data pdf.render,
@@ -38,7 +38,7 @@ class PetsController < ApplicationController
         @connection = Connection.new(Connection_Type: request_parameter[:Connection_Type], pet_id: @pet[:id], connectable_type: Organization, connectable_id: @organization.id)
       end
       @connection.save
-      render json: @pet, status: :created, location: @pet
+      render json: @pet, status: :created, location: @pet, serializer: PetSerializer
     else
       render json: @pet.errors, status: :unprocessable_entity
     end
@@ -48,7 +48,7 @@ class PetsController < ApplicationController
   def update
     if  (Connection.find_by(pet_id: @pet[:id])[:connectable_id] == @user.id && Connection.find_by(pet_id: @pet[:id])[:connectable_type] == "User") || (Connection.find_by(pet_id: @pet[:id])[:connectable_id] == @organization.id && Connection.find_by(pet_id: @pet[:id])[:connectable_type] == "Organization")
       if @pet.update(pet_params)
-        render json: @pet
+        render json: @pet, serializer: PetSerializer
       else
         render json: @pet.errors, status: :unprocessable_entity
       end
@@ -63,19 +63,19 @@ class PetsController < ApplicationController
   def publications
     @pets = Pet.paginate_by_sql(Pet.petsToAdopt, :page => @page, :per_page => 25)
     #@pets = ActiveRecord::Base.connection.exec_query(Pet.petsToAdopt) 
-    render json: @pets
+    render :json => @pets.to_json
   end
 
   #TO_FIX
   def comments
     #post = Post.find(params[:id])
-    render json: post.comments
+    render :json => @pet.comments.to_json
   end
   
   def create_comments
     comment = Comment.new(comment_params)
     if comment.save
-      render json: comment, status: :created, location: comment
+      render json: comment, status: :created, location: comment, serializer: PetSerializer
     else
       render json: comment.errors, status: :unprocessable_entity
     end
@@ -83,12 +83,12 @@ class PetsController < ApplicationController
 
   def losts
     @pets = Pet.paginate_by_sql(Pet.petsToFind, :page => @page, :per_page => 25)
-    render json: @pets
+    render :json => @pets.to_json
   end
 
   def adopt
     @users = Pet.paginate_by_sql(Pet.waitToAdopt(params[:id]), :page => @page, :per_page => 25)
-    render json: @users
+    render :json => @pets.to_json
   end
 
   def create_interest
@@ -106,7 +106,7 @@ class PetsController < ApplicationController
     @connection.save
 
     if @pet.update(Pet_Visible: false)
-      render json: @pet
+      render json: @pet, serializer: PetSerializer
     else
       render json: @pet.errors, status: :unprocessable_entity
     end
@@ -121,7 +121,7 @@ class PetsController < ApplicationController
     @connection.save
 
     if @pet.update(Pet_Visible: false)
-      render json: @pet
+      render json: @pet, serializer: PetSerializer
     else
       render json: @pet.errors, status: :unprocessable_entity
     end
