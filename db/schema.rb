@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 2019_06_16_150110) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.json "avatar"
+    t.string "avatar"
   end
 
   create_table "pets", force: :cascade do |t|
@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(version: 2019_06_16_150110) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.json "avatar"
+    t.string "avatar"
   end
 
   add_foreign_key "comments", "users"

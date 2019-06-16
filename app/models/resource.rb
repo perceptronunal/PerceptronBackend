@@ -20,6 +20,6 @@ class Resource < ApplicationRecord
     belongs_to :resourceable, polymorphic: true
 
     #avatar
-    mount_uploader :avatar, AvatarUploader
+    mount_base64_uploader :avatar, AvatarUploader
     
 end

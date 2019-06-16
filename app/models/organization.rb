@@ -31,6 +31,9 @@ class Organization < ApplicationRecord
     has_many :resources, as: :resourceable, dependent: :destroy
     has_many :connections, as: :commenteable, dependent: :destroy
 
+    #avatar
+    mount_base64_uploader :avatar, AvatarUploader
+
     scope :Organization_Validation, -> { where(Organization_Validation: true) }
 
     def self.allPublications

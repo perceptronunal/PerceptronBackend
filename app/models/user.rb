@@ -22,6 +22,9 @@ class User < ApplicationRecord
     has_many :resources, as: :resourceable, dependent: :destroy
     has_many :comments, dependent: :destroy
     has_many :connections, as: :commenteable, dependent: :destroy
+
+    #avatar
+    mount_base64_uploader :avatar, AvatarUploader
     
     def self.allPublications
         query = " select count(\"user_id\")

@@ -40,6 +40,12 @@ class OrganizationsController < ApplicationController
       end
       @login.update(email: @organization.Organization_Email, password_digest: @organization.password_digest)
     end
+
+    if (params[:base64])
+      @organization.avatar = params[:base64]
+      @organization.save
+    end
+
   end
 
   # DELETE /organizations/1
@@ -57,7 +63,7 @@ class OrganizationsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def organization_params
-      params.require(:organization).permit(:Organization_Name, :Organization_Address, :Organization_Phone, :Organization_Email, :Organization_Website, :Organization_Description, :Organization_Validation, :password)
+      params.require(:organization).permit(:Organization_Name, :Organization_Address, :Organization_Phone, :Organization_Email, :Organization_Website, :Organization_Description, :Organization_Validation, :password, :avatar)
     end
 
     def rol

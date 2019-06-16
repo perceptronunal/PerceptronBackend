@@ -67,5 +67,10 @@ gem 'prawn-table'
 # carrierwave
 gem 'carrierwave', '~> 1.0'
 
+# carrierwave base64
+gem 'carrierwave-base64'
+gem "carrierwave-mongoid"
+gem 'mime-types'
+
 # cut and scale images for carrier
 gem 'mini_magick'

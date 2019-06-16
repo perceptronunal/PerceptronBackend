@@ -40,6 +40,12 @@ class UsersController < ApplicationController
       end
       @login.update(email: @user.User_Email, password_digest: @user.password_digest)
     end
+
+    if (params[:base64])
+      @user.avatar = params[:base64]
+      @user.save
+    end
+
   end
 
   # DELETE /users/1
@@ -61,7 +67,7 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:User_Name, :User_Email, :User_Phone, :User_City, :password)
+      params.require(:user).permit(:User_Name, :User_Email, :User_Phone, :User_City, :password, :avatar)
     end
 
     def login_params
