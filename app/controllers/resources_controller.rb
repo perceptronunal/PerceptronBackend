@@ -28,7 +28,7 @@ class ResourcesController < ApplicationController
       @resource = @pet.resources.new(resource_params)
     when "organization"
       @organization = Organization.find(id)
-      @resource = @organization.resources.new(resource_params) 
+      @resource = @organization.resources.new(resource_params)
     when "user"
       @user = User.find(id)
       @resource = @user.resources.new(resource_params)
@@ -64,7 +64,7 @@ class ResourcesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def resource_params
-      params.require(:resource).permit(:Resource_Type, :Resource_Link)
+      params.require(:resource).permit(:Resource_Type, :Resource_Link, :avatar)
     end
 
     def resource_params_poly

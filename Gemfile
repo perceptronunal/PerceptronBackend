@@ -63,3 +63,9 @@ gem "bcrypt", "~> 3.1"
 
 gem 'prawn'
 gem 'prawn-table'
+
+# carrierwave
+gem 'carrierwave', '~> 1.0'
+
+# cut and scale images for carrier
+gem 'mini_magick'

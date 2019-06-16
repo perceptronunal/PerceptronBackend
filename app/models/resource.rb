@@ -18,4 +18,8 @@ class Resource < ApplicationRecord
 
     #Asociations
     belongs_to :resourceable, polymorphic: true
+
+    #avatar
+    mount_uploader :avatar, AvatarUploader
+    
 end
