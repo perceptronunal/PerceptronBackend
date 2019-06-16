@@ -1,16 +1,13 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  before_action :authenticate_user, only: [:current, :update, :destroy]
+  before_action :rol, only: [:update, :destroy]
+  before_action :authenticate_login, only: [:update, :destroy]
 
   # GET /users
   def index
     @users = User.paginate(page: params[:page], per_page:25)
 
     render json: @users
-  end
-
-  def current
-    render json: current_user
   end
 
   # GET /users/1
@@ -27,22 +24,28 @@ class UsersController < ApplicationController
     else
       render json: @user.errors, status: :unprocessable_entity
     end
+
+    @login = Login.new(email: @user.User_Email, password_digest: @user.password_digest)
+    @login.save
   end
 
   # PATCH/PUT /users/1
   def update
-    if current_user[:id] == @comment[:user_id]
+    if current_login[:id] == @user[:user_id]
+      @login = Login.find_by(email: @user.User_Email)
       if @user.update(user_params)
         render json: @user
       else
         render json: @user.errors, status: :unprocessable_entity
       end
+      @login.update(email: @user.User_Email, password_digest: @user.password_digest)
     end
   end
 
   # DELETE /users/1
   def destroy
     @user.destroy
+    Login.find_by(email: @user.User_Email).destroy
   end
 
   def likes
@@ -59,5 +62,16 @@ class UsersController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def user_params
       params.require(:user).permit(:User_Name, :User_Email, :User_Phone, :User_City, :password)
+    end
+
+    def login_params
+      params.require(:user).permit(:User_Email, :password)
+    end
+
+    def rol
+      if !current_login.nil?
+        @user = User.find_by(User_Email: current_login[:email])
+        @organization = Organization.find_by(Organization_Email: current_login[:email])
+      end
     end
 end

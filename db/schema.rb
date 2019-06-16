@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_08_233428) do
+ActiveRecord::Schema.define(version: 2019_06_16_062942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,13 @@ ActiveRecord::Schema.define(version: 2019_06_08_233428) do
     t.bigint "connectable_id"
     t.index ["connectable_type", "connectable_id"], name: "index_connections_on_connectable_type_and_connectable_id"
     t.index ["pet_id"], name: "index_connections_on_pet_id"
+  end
+
+  create_table "logins", force: :cascade do |t|
+    t.string "email"
+    t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "organizations", force: :cascade do |t|

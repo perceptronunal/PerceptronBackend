@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
+  post 'login_token' => 'login_token#create'
   post 'organization_token' => 'organization_token#create'
   post 'user_token' => 'user_token#create'
   get 'users/current' => 'users#current'
+  get 'organizations/current' => 'organizations#current'
+  get 'logins/current' => 'logins#current'
   resources :organizations
   resources :resources
   resources :pets do
@@ -10,9 +13,9 @@ Rails.application.routes.draw do
       get 'adopt', action: :adopt, controller: 'pets'
       post 'comments', action: :create_comments, controller: 'pets'
       post 'interest', action: :create_interest, controller: 'pets'
-      post 'adopt', action: :create_adoption, controller: 'pets'   
-      post 'adopted', action: :confirm_adoption, controller: 'pets' 
-      post 'found', action: :found, controller: 'pets' 
+      post 'adopt', action: :create_adoption, controller: 'pets'
+      post 'adopted', action: :confirm_adoption, controller: 'pets'
+      post 'found', action: :found, controller: 'pets'
     end
     collection do
       get 'publications', action: :publications, controller: 'pets'

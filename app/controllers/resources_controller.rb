@@ -1,7 +1,6 @@
 class ResourcesController < ApplicationController
   before_action :set_resource, only: [:show, :update, :destroy]
-  before_action :authenticate_user, only: [:create, :update, :destroy]
-  before_action :authenticate_organization, only: [:create, :update, :destroy], unless: -> { !current_user.nil? }
+  before_action :authenticate_login, only: [:create, :update, :destroy]
 
   # GET /resources
   def index
@@ -34,7 +33,6 @@ class ResourcesController < ApplicationController
       @user = User.find(id)
       @resource = @user.resources.new(resource_params)
     else
-
     end
 
     if @resource.save

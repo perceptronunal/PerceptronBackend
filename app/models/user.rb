@@ -30,10 +30,10 @@ class User < ApplicationRecord
     end
 
     #Authorization override
-    def self.from_token_request request
-        user_email = request.params["auth"] && request.params["auth"]["User_Email"]
-        self.find_by User_Email: user_email
-    end
+    # def self.from_token_request request
+    #     user_email = request.params["auth"] && request.params["auth"]["User_Email"]
+    #     self.find_by User_Email: user_email
+    # end
 
     def self.usersToLikes(id)
         query = "select * from connections 

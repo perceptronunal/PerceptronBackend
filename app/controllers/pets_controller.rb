@@ -1,7 +1,9 @@
 class PetsController < ApplicationController
-  before_action :set_pet, only: [:show, :update, :destroy, :comments, :create_interest]
-  before_action :authenticate_user, only: [:create, :show, :update, :destroy]
-  before_action :authenticate_organization, only: [:create, :update, :destroy], unless: -> { !current_user.nil? }
+  before_action :set_pet, only: [:show, :update, :destroy, :comments, :create_interest, :confirm_adoption, :create_adoption, :adopt, :found]
+  #before_action :authenticate_user, only: [:create, :show, :update, :destroy, :create_comments, :found]
+  #before_action :authenticate_organization, only: [:create, :update, :destroy, :found], unless: -> { !current_user.nil? }
+  before_action :rol, only: [:show, :create, :update, :destroy, :create_comments, :create_interest, :confirm_adoption, :create_adoption, :adopt, :found]
+  before_action :authenticate_login, only: [:show, :create, :update, :destroy, :create_comments, :create_interest, :confirm_adoption, :create_adoption, :adopt, :found]
 
   # GET /pets
   def index
@@ -17,7 +19,7 @@ class PetsController < ApplicationController
     respond_to do |format|
       format.json {render json: @pet}
       format.pdf do
-        pdf = PetPdf.new(current_user[:id], adopter[:user_id])
+        pdf = PetPdf.new(@user.id, adopter[:user_id])
         send_data pdf.render,
           filename: "contrato.pdf",
           type: 'application/pdf',
@@ -28,34 +30,30 @@ class PetsController < ApplicationController
 
   # POST /pets
   def create
-    
     @pet = Pet.new(pet_params)
-
     if @pet.save
-
-      if(!current_user.nil?)
-        @connection = Connection.new(Connection_Type: request_parameter[:Connection_Type], pet_id: @pet[:id], connectable_type: User, connectable_id: current_user[:id])
+      if @user != nil
+        @connection = Connection.new(Connection_Type: request_parameter[:Connection_Type], pet_id: @pet[:id], connectable_type: User, connectable_id: @user.id)
       else
-        @connection = Connection.new(Connection_Type: request_parameter[:Connection_Type], pet_id: @pet[:id], connectable_type: Organization, connectable_id: current_organization[:id])
+        @connection = Connection.new(Connection_Type: request_parameter[:Connection_Type], pet_id: @pet[:id], connectable_type: Organization, connectable_id: @organization.id)
       end
       @connection.save
       render json: @pet, status: :created, location: @pet
     else
       render json: @pet.errors, status: :unprocessable_entity
     end
-    
   end
 
   # PATCH/PUT /pets/1
   def update
-    if  (Connection.find_by(pet_id: @pet[:id])[:connectable_id] == current_user[:id] && Connection.find_by(pet_id: @pet[:id])[:connectable_type] == "User") || (Connection.find_by(pet_id: @pet[:id])[:connectable_id] == current_organization[:id] && Connection.find_by(pet_id: @pet[:id])[:connectable_type] == "Organization")
+    if  (Connection.find_by(pet_id: @pet[:id])[:connectable_id] == @user.id && Connection.find_by(pet_id: @pet[:id])[:connectable_type] == "User") || (Connection.find_by(pet_id: @pet[:id])[:connectable_id] == @organization.id && Connection.find_by(pet_id: @pet[:id])[:connectable_type] == "Organization")
       if @pet.update(pet_params)
         render json: @pet
       else
         render json: @pet.errors, status: :unprocessable_entity
       end
     end
-end
+  end
 
   # DELETE /pets/1
   def destroy
@@ -68,6 +66,7 @@ end
     render json: @pets
   end
 
+  #TO_FIX
   def comments
     #post = Post.find(params[:id])
     render json: post.comments
@@ -93,17 +92,16 @@ end
   end
 
   def create_interest
-    @connection = Connection.new(Connection_Type: "Interesado", pet_id: @pet[:id], connectable_type: User, connectable_id: current_user[:id])
+    @connection = Connection.new(Connection_Type: "Interesado", pet_id: @pet[:id], connectable_type: User, connectable_id: @user.id)
     @connection.save
   end
 
   def create_adoption
-    @connection = Connection.new(Connection_Type: "Adoptar", pet_id: @pet[:id], connectable_type: User, connectable_id: current_user[:id])
+    @connection = Connection.new(Connection_Type: "Adoptar", pet_id: @pet[:id], connectable_type: User, connectable_id: @user.id)
     @connection.save
   end
 
   def confirm_adoption
-
     @connection = Connection.new(Connection_Type: "Adoptado", pet_id: @pet[:id], connectable_type: User, connectable_id: adopter[:user_id])
     @connection.save
 
@@ -112,16 +110,21 @@ end
     else
       render json: @pet.errors, status: :unprocessable_entity
     end
-
   end
 
   def found
-    if(!current_user.nil?)
-      @connection = Connection.new(Connection_Type: "Encontrado", pet_id: @pet[:id], connectable_type: User, connectable_id: current_user[:id])
+    if(@user != nil)
+      @connection = Connection.new(Connection_Type: "Encontrado", pet_id: @pet[:id], connectable_type: User, connectable_id: @user.id)
     else
-      @connection = Connection.new(Connection_Type: "Encontrado", pet_id: @pet[:id], connectable_type: Organization, connectable_id: current_organization[:id])
+      @connection = Connection.new(Connection_Type: "Encontrado", pet_id: @pet[:id], connectable_type: Organization, connectable_id: @organization.id)
     end
     @connection.save
+
+    if @pet.update(Pet_Visible: false)
+      render json: @pet
+    else
+      render json: @pet.errors, status: :unprocessable_entity
+    end
   end
 
   private
@@ -145,5 +148,12 @@ end
 
     def comment_params
       params.require(:comment).permit(:Comment_Comment, :commenteable_type, :commenteable_id, :user_id)
+    end
+
+    def rol
+      if !current_login.nil?
+        @user = User.find_by(User_Email: current_login[:email])
+        @organization = Organization.find_by(Organization_Email: current_login[:email])
+      end
     end
 end

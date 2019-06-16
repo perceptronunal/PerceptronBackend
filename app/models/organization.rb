@@ -39,8 +39,8 @@ class Organization < ApplicationRecord
     end
 
     #Authorization override
-    def self.from_token_request request
-        organization_email = request.params["auth"] && request.params["auth"]["Organization_Email"]
-        self.find_by Organization_Email: organization_email
-    end
+    # def self.from_token_request request
+    #     organization_email = request.params["auth"] && request.params["auth"]["Organization_Email"]
+    #     self.find_by Organization_Email: organization_email
+    # end
 end

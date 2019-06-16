@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :update, :destroy]
-  before_action :authenticate_user, only: [:create, :update, :destroy]
-  before_action :authenticate_organization, only: [:create, :update, :destroy], unless: -> { !current_user.nil? }
+  before_action :rol, only: [:create, :update, :destroy]
+  before_action :authenticate_login, only: [:create, :update, :destroy]
 
   # GET /comments
   def index
@@ -42,7 +42,7 @@ class CommentsController < ApplicationController
   # PATCH/PUT /comments/1
   def update
    
-    if current_user[:id] == @comment[:user_id] 
+    if @user.id == @comment[:user_id] 
       if @comment.update(comment_params)
         render json: @comment
       else
@@ -72,5 +72,12 @@ class CommentsController < ApplicationController
 
     def comment_params_poly
       params.require(:comment).permit(:Commenteable_Type, :Commenteable_Id)
+    end
+
+    def rol
+      if !current_login.nil?
+        @user = User.find_by(User_Email: current_login[:email])
+        @organization = Organization.find_by(Organization_Email: current_login[:email])
+      end
     end
 end
