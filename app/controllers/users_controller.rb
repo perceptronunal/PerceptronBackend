@@ -13,6 +13,7 @@ class UsersController < ApplicationController
   # GET /users/1
   def show
     render json: @user
+    
   end
 
   # POST /users
@@ -28,12 +29,6 @@ class UsersController < ApplicationController
       else
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
-    end
-
-    if @user.save
-      render json: @user, status: :created, location: @user
-    else
-      render json: @user.errors, status: :unprocessable_entity
     end
 
     @login = Login.new(email: @user.User_Email, password_digest: @user.password_digest)

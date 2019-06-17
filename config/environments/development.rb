@@ -14,7 +14,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
   address:              'smtp.gmail.com',
   port:                 587,
-  domain:               '',
+  domain:               'http://localhost:3000',
   user_name:            'happypets.perceptron',
   password:             'helloworld.,',
   authentication:       'plain',

@@ -106,7 +106,13 @@ class PetsController < ApplicationController
   def confirm_adoption
     @connection = Connection.new(Connection_Type: "Adoptado", pet_id: @pet[:id], connectable_type: User, connectable_id: adopter[:user_id])
     @connection.save
-
+    
+    if (@connection.connectable_type == "User")
+      WelcomeMailer.youHaveAdoptedUSer(User.find(@connection.connectable_id)).deliver_now
+    else
+      WelcomeMailer.youHaveAdoptedOrganization(Organization.find(@connection.connectable_id)).deliver_now
+    end
+    
     if @pet.update(Pet_Visible: false)
       render json: @pet, serializer: PetSerializer
     else
