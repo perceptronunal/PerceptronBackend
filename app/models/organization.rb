@@ -29,7 +29,7 @@ class Organization < ApplicationRecord
     #Asociations
     has_many :posts, dependent: :destroy
     has_many :resources, as: :resourceable, dependent: :destroy
-    has_many :connections, dependent: :destroy
+    has_many :connections, as: :commenteable, dependent: :destroy
 
     scope :Organization_Validation, -> { where(Organization_Validation: true) }
 
@@ -39,8 +39,8 @@ class Organization < ApplicationRecord
     end
 
     #Authorization override
-    def self.from_token_request request
-        organization_email = request.params["auth"] && request.params["auth"]["Organization_Email"]
-        self.find_by Organization_Email: organization_email
-    end
+    # def self.from_token_request request
+    #     organization_email = request.params["auth"] && request.params["auth"]["Organization_Email"]
+    #     self.find_by Organization_Email: organization_email
+    # end
 end

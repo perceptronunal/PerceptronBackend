@@ -1,42 +1,65 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :update, :destroy]
-  before_action :authenticate_organization, only: [:create, :update, :destroy, :current]
+  before_action :set_post, only: [:show, :update, :destroy, :comments]
+  before_action :rol, only: [:create, :update, :destroy]
+  before_action :authenticate_login, only: [:create, :update, :destroy]
 
   # GET /posts
   def index
     @posts = Post.paginate(page: params[:page], per_page:25)
 
-    render json: @posts
+    render json: @posts, serializar: PostSerializer
   end
 
   # GET /posts/1
   def show
-    render json: @post
+    render json: @post, serializar: PostSerializer
   end
 
   # POST /posts
   def create
-    @post = Post.new(post_params)
+    if @organization != nil
+      @post = Post.new(post_params)
 
-    if @post.save
-      render json: @post, status: :created, location: @post
-    else
-      render json: @post.errors, status: :unprocessable_entity
+      if @post.save
+        render json: @post, status: :created, location: @post, serializar: PostSerializer
+      else
+        render json: @post.errors, status: :unprocessable_entity
+      end
     end
   end
 
   # PATCH/PUT /posts/1
   def update
-    if @post.update(post_params)
-      render json: @post
-    else
-      render json: @post.errors, status: :unprocessable_entity
+    if @organization != nil
+      if current_login[:id] == @organization[:organization_id] 
+        if @post.update(post_params)
+          render json: @post, serializar: PostSerializer
+        else
+          render json: @post.errors, status: :unprocessable_entity
+        end
+      end
     end
   end
 
   # DELETE /posts/1
   def destroy
-    @post.destroy
+    if @organization != nil
+      @post.destroy
+    end
+  end
+
+  def comments
+    #post = Post.find(params[:id])
+    render :json => @post.comments.to_json
+  end
+  
+  def create_comments
+    comment = Comment.new(comment_params)
+    if comment.save
+      render json: comment, status: :created, location: comment, serializar: PostCommet
+    else
+      render json: comment.errors, status: :unprocessable_entity
+    end
   end
 
   private
@@ -49,4 +72,16 @@ class PostsController < ApplicationController
     def post_params
       params.require(:post).permit(:Post_Title, :Post_Content, :Post_Tag, :organization_id)
     end
+
+    def comment_params
+      params.require(:comment).permit(:Comment_Comment, :commenteable_type, :commenteable_id, :user_id)
+    end
+
+    def rol
+      if !current_login.nil?
+        @user = User.find_by(User_Email: current_login[:email])
+        @organization = Organization.find_by(Organization_Email: current_login[:email])
+      end
+    end
+
 end

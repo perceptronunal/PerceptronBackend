@@ -9,24 +9,10 @@
 #Faker
 
 100.times do
-    User.create(
-        User_Name: Faker::Name.name_with_middle,
-        User_Email: Faker::Internet.unique.free_email,
-        User_Phone: Faker::PhoneNumber.cell_phone,
-        User_City: Faker::Nation.capital_city,
-        password: Faker::Games::LeagueOfLegends.champion
-    )
-
-end
-
-
-100.times do
     Pet.create(
-        # 0 = dog, 1 = cat, 2 = rabbit
         Pet_Type: ["Perro", "Gato"].sample, 
         Pet_Name: Faker::Creature::Dog.name, 
         Pet_Gender: Faker::Creature::Dog.gender, 
-        # meses
         Pet_Age: Faker::Number.between(1,96), 
         Pet_Color: Faker::Color.color_name,
         Pet_Size: Faker::Creature::Dog.size, 
@@ -35,7 +21,16 @@ end
         Pet_Description: Faker::Creature::Dog.meme_phrase,
         Pet_Visible: Faker::Boolean.boolean
     )
+end
 
+100.times do
+    User.create(
+        User_Name: Faker::Name.name_with_middle,
+        User_Email: Faker::Internet.unique.free_email,
+        User_Phone: Faker::PhoneNumber.cell_phone,
+        User_City: Faker::Nation.capital_city,
+        password: Faker::Games::LeagueOfLegends.champion
+    )
 end
 
 100.times do
@@ -49,17 +44,27 @@ end
         Organization_Validation: Faker::Boolean.boolean,
         password: Faker::Games::LeagueOfLegends.champion
     )
-
 end
 
 100.times do
-    Connection.create(
-        Connection_Type: ["Adoptar", "Publicar", "Adoptado", "Encontrado", "Perdido", "Interesado"].sample,
-        user_id: Faker::Number.between(1, 100),
-        pet_id: Faker::Number.between(1, 100),
-        organization_id: Faker::Number.between(1, 100)
-    )
-
+    case rand(1..2)
+    when 1
+        Connection.create(
+            Connection_Type: ["Adoptar", "Publicar", "Adoptado", "Encontrado", "Perdido", "Interesado"].sample,        
+            pet_id: Faker::Number.between(1, 100),
+            connectable_id: Faker::Number.between(1, 100),
+            connectable_type: User
+        )
+    when 2
+        Connection.create(
+            Connection_Type: ["Adoptar", "Publicar", "Adoptado", "Encontrado", "Perdido", "Interesado"].sample,        
+            pet_id: Faker::Number.between(1, 100),
+            connectable_id: Faker::Number.between(1, 100),
+            connectable_type: Organization
+        )
+    else
+        puts "error"
+    end
 end
 
 100.times do
@@ -67,8 +72,8 @@ end
         organization_id: Faker::Number.between(1, 100),
         Post_Title: Faker::Lorem.sentence,
         Post_Content: Faker::Lorem.paragraphs,
-    )
-    
+        Post_Tag: ["Evento", "Campaña", "Anuncio Mascota", "Noticia", "Sugerencia", "Voluntariado"].sample
+    )    
 end
 
 100.times do
@@ -116,13 +121,15 @@ end
         Comment.create(
             Comment_Comment: Faker::Lorem.paragraph,
             commenteable_type: Pet,
-            commenteable_id: Faker::Number.between(1, 100)
+            commenteable_id: Faker::Number.between(1, 100),
+            user_id: Faker::Number.between(1, 100)
         )
     when 2
         Comment.create(
             Comment_Comment: Faker::Lorem.paragraph,
             commenteable_type: Post,
-            commenteable_id: Faker::Number.between(1, 100)
+            commenteable_id: Faker::Number.between(1, 100),
+            user_id: Faker::Number.between(1, 100)
         )
     else
         puts "error"
