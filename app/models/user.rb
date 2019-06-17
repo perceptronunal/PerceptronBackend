@@ -1,14 +1,12 @@
 # == Schema Information
 #
-# Table name: users
-#
-#  User_Email :bigint           not null, primary key
-#  User_Name  :string
-#  User_Email :string
-#  User_Phone :string
-#  User_City  :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#     t.string "User_Name"
+#     t.string "User_Email"
+#     t.string "User_Phone"
+#     t.string "User_City"
+#     t.string "password_digest"
+#     t.datetime "created_at", null: false
+#     t.datetime "updated_at", null: false
 #
 
 class User < ApplicationRecord

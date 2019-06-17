@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  #Google Auth Verification
+  post 'google_auth' => 'google_auth#create'
+
   post 'login_token' => 'login_token#create'
   post 'organization_token' => 'organization_token#create'
   post 'user_token' => 'user_token#create'
