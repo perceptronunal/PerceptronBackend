@@ -63,3 +63,9 @@ gem "bcrypt", "~> 3.1"
 
 gem 'prawn'
 gem 'prawn-table'
+
+#google auth
+gem 'omniauth-google-oauth2'
+
+#http party
+gem 'httparty', '~> 0.17.0'
