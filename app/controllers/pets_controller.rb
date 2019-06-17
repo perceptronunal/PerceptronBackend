@@ -15,6 +15,7 @@ class PetsController < ApplicationController
 
   # GET /pets/1
   def show
+    
     #render json: @pet
     respond_to do |format|
       format.json {render json: @pet, serializer: PetSerializer}
@@ -30,6 +31,7 @@ class PetsController < ApplicationController
 
   # POST /pets
   def create
+  
     @pet = Pet.new(pet_params)
     if @pet.save
       if @user != nil
