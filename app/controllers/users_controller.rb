@@ -24,6 +24,8 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         # Tell the UserMailer to send a welcome email after save
+        @login = Login.new(email: @user.User_Email, password_digest: @user.password_digest)
+        @login.save
         WelcomeMailer.welcome_email(@user).deliver_now
         format.json { render json: @user, status: :created, location: @user }
       else
