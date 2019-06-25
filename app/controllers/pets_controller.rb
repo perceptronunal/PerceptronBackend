@@ -108,9 +108,9 @@ class PetsController < ApplicationController
     @connection.save
     
     if (@connection.connectable_type == "User")
-      WelcomeMailer.youHaveAdoptedUSer(User.find(@connection.connectable_id)).deliver_now
+      WelcomeMailer.you_have_adopted_user(User.find(@connection.connectable_id)).deliver_now!
     else
-      WelcomeMailer.youHaveAdoptedOrganization(Organization.find(@connection.connectable_id)).deliver_now
+      WelcomeMailer.you_have_adopted_organization(Organization.find(@connection.connectable_id)).deliver_now!
     end
     
     if @pet.update(Pet_Visible: false)
