@@ -31,7 +31,7 @@ class OrganizationsController < ApplicationController
 
   # PATCH/PUT /organizations/1
   def update
-    if current_organization[:id] == @organization[:organization_id] 
+    if current_organization[:id] == @organization.id
       @login = Login.find_by(email: @organization.Organization_Email)
       if @organization.update(organization_params)
         render json: @organization

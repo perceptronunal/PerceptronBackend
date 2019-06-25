@@ -39,12 +39,12 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if current_login[:id] == @user[:user_id]
+    if current_login[:id] == @user.id
       @login = Login.find_by(email: @user.User_Email)
       if @user.update(user_params)
-        render json: @user
+       render json: @user
       else
-        render json: @user.errors, status: :unprocessable_entity
+       render json: @user.errors, status: :unprocessable_entity
       end
       @login.update(email: @user.User_Email, password_digest: @user.password_digest)
     end

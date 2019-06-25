@@ -72,7 +72,7 @@ end
         organization_id: Faker::Number.between(1, 100),
         Post_Title: Faker::Lorem.sentence,
         Post_Content: Faker::Lorem.paragraphs,
-        Post_Tag: ["Evento", "Campaña", "Anuncio Mascota", "Noticia", "Sugerencia", "Voluntariado"].sample
+        Post_Tag: ["Evento", "Campaña", "Mascota", "Noticia", "Sugerencia", "Voluntariado"].sample
     )    
 end
 
