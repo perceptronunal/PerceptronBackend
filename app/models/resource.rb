@@ -12,6 +12,9 @@
 #
 
 class Resource < ApplicationRecord
+    #many files
+    has_many_attached :file
+
     #validations
     validates :Resource_Type, presence: true
     validates :Resource_Link, presence: true
