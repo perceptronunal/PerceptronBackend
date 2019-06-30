@@ -81,34 +81,42 @@ end
     when 1
         Resource.create(
             
-            Resource_Type: Faker::Lorem.word,
-            Resource_Link: Faker::Internet.url,
+            Resource_Type: Faker::File.extension,
+            Resource_Link: Faker::File.file_name('https://petshappy2.s3-us-west-1.amazonaws.com'),
             resourceable_type: Pet,
-            resourceable_id: Faker::Number.between(1, 100) 
+            resourceable_id: Faker::Number.between(1, 100),
+            filename: Faker::File.mime_type,
+            bytesize: Faker::Number.between(1, 10000) 
         )
     when 2
         Resource.create(
             
-            Resource_Type: Faker::Lorem.word,
-            Resource_Link: Faker::Internet.url,
+            Resource_Type: Faker::File.extension,
+            Resource_Link: Faker::File.file_name('https://petshappy2.s3-us-west-1.amazonaws.com'),
             resourceable_type: Post,
-            resourceable_id: Faker::Number.between(1, 100) 
+            resourceable_id: Faker::Number.between(1, 100),
+            filename: Faker::File.mime_type,
+            bytesize: Faker::Number.between(1, 10000) 
         )
     when 3
         Resource.create(
             
-            Resource_Type: Faker::Lorem.word,
-            Resource_Link: Faker::Internet.url,
+            Resource_Type: Faker::File.extension,
+            Resource_Link: Faker::File.file_name('https://petshappy2.s3-us-west-1.amazonaws.com'),
             resourceable_type: User,
-            resourceable_id: Faker::Number.between(1, 100) 
+            resourceable_id: Faker::Number.between(1, 100),
+            filename: Faker::File.mime_type,
+            bytesize: Faker::Number.between(1, 10000) 
         )
     when 4
         Resource.create(
             
-            Resource_Type: Faker::Lorem.word,
-            Resource_Link: Faker::Internet.url,
+            Resource_Type: Faker::File.extension,
+            Resource_Link: Faker::File.file_name('https://petshappy2.s3-us-west-1.amazonaws.com'),
             resourceable_type: Organization,
-            resourceable_id: Faker::Number.between(1, 100) 
+            resourceable_id: Faker::Number.between(1, 100),
+            filename: Faker::File.mime_type,
+            bytesize: Faker::Number.between(1, 10000) 
         )
     else
         puts "error"
