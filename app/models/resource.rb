@@ -18,7 +18,7 @@ class Resource < ApplicationRecord
     has_one_attached :file
 
     #validations
-    validates :Resource_Type, presence: true
+    #validates :Resource_Type, presence: true
     #validates :Resource_Link, presence: true
 
     #Asociations

@@ -48,6 +48,7 @@ class ResourcesController < ApplicationController
       @resource.Resource_Link = 'https://petshappy2.s3-us-west-1.amazonaws.com/'+ @resource.file.key
       @resource.filename = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).filename
       @resource.bytesize = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).byte_size
+      @resource.Resource_Type = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).content_type
       render json: @resource, status: :created, location: @resource
     else
       render json: @resource.errors, status: :unprocessable_entity
@@ -60,6 +61,7 @@ class ResourcesController < ApplicationController
       @resource.link = 'https://petshappy2.s3-us-west-1.amazonaws.com/'+ @resource.file.key
       @resource.filename = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).filename
       @resource.bytesize = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).byte_size
+      @resource.Resource_Type = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).content_type
       render json: @resource
     else
       render json: @resource.errors, status: :unprocessable_entity
