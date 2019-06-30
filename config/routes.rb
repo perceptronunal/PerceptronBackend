@@ -8,6 +8,11 @@ Rails.application.routes.draw do
   get 'users/current' => 'users#current'
   get 'organizations/current' => 'organizations#current'
   get 'logins/current' => 'logins#current'
+  #statistics of a post's tag
+  get 'statistics', to: 'statistics#count_tag'
+  
+  post 'contact' => 'contact#contact'
+
   resources :organizations
   resources :resources
   resources :pets do
