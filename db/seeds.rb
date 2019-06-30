@@ -143,3 +143,28 @@ end
         puts "error"
     end
 end
+
+100.times do
+    case rand(1..2)
+    when 1
+        Profilepicture.create(
+            
+            ProfilePicture_Link: Faker::File.file_name('https://petshappy2.s3-us-west-1.amazonaws.com'),
+            profilepicturesable_type: User,
+            profilepicturesable_id: Faker::Number.between(1, 100),
+            ProfilePicture_Filename: Faker::File.mime_type,
+            ProfilePicture_Bytesize: Faker::Number.between(1, 10000) 
+        )
+    when 2
+        Profilepicture.create(
+            
+            ProfilePicture_Link: Faker::File.file_name('https://petshappy2.s3-us-west-1.amazonaws.com'),
+            profilepicturesable_type: Organization,
+            profilepicturesable_id: Faker::Number.between(1, 100),
+            ProfilePicture_Filename: Faker::File.mime_type,
+            ProfilePicture_Bytesize: Faker::Number.between(1, 10000) 
+        )
+    else
+        puts "error"
+    end
+end

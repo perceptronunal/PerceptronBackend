@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_30_085146) do
+ActiveRecord::Schema.define(version: 2019_06_30_191330) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,6 +101,17 @@ ActiveRecord::Schema.define(version: 2019_06_30_085146) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["organization_id"], name: "index_posts_on_organization_id"
+  end
+
+  create_table "profilepictures", force: :cascade do |t|
+    t.string "ProfilePicture_Link"
+    t.string "ProfilePicture_Filename"
+    t.integer "ProfilePicture_Bytesize"
+    t.string "profilepicturesable_type"
+    t.bigint "profilepicturesable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["profilepicturesable_type", "profilepicturesable_id"], name: "my_index"
   end
 
   create_table "resources", force: :cascade do |t|

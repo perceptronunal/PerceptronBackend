@@ -11,9 +11,9 @@ class ResourcesController < ApplicationController
 
   # GET /resources/1
   def show
-    # data = open('https://petshappy2.s3-us-west-1.amazonaws.com/'+ @user.file.key) 
-    # send_data data.read, type: @user.file.content_type, disposition: 'inline'
-    # send_file @user.path_file(@user.file), type: @user.file.content_type, disposition: 'inline'
+    # data = open('https://petshappy2.s3-us-west-1.amazonaws.com/'+ @resource.file.key) 
+    # send_data data.read, type: @resource.file.content_type, disposition: 'inline'
+    # send_file @resource.path_file(@resource.file), type: @resource.file.content_type, disposition: 'inline'
     redirect_to @resource.path_file(@resource.file)
     # render json: @resource
   end
@@ -45,7 +45,7 @@ class ResourcesController < ApplicationController
     end
 
     if @resource.save
-      @resource.link = 'https://petshappy2.s3-us-west-1.amazonaws.com/'+ @resource.file.key
+      @resource.Resource_Link = 'https://petshappy2.s3-us-west-1.amazonaws.com/'+ @resource.file.key
       @resource.filename = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).filename
       @resource.bytesize = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).byte_size
       render json: @resource, status: :created, location: @resource
@@ -79,7 +79,7 @@ class ResourcesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def resource_params
-      params.require(:resource).permit(:Resource_Type, :Resource_Link, :file)
+      params.require(:resource).permit(:Resource_Type, :file)
     end
 
     def resource_params_poly
