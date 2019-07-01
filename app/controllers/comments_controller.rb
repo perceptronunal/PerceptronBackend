@@ -6,28 +6,23 @@ class CommentsController < ApplicationController
   # GET /comments
   def index
     @comments = Comment.paginate(page: params[:page], per_page:25)
-    #error serialization
-    #render json: @comments, serializer: CommentSerializer
-    render :json => @comments.to_json
+    render json: @comments, each_serializer: CommentSerializer
   end
 
   # GET /comments/1
   def show
-    #error serialization
-    #render json: @comment, serializer: CommentSerializer
-    render :json => @comment.to_json
+    render json: @comment, serializer: CommentSerializer
+
   end
 
   # PATCH/PUT /comments/1
   def update
    
-    if @user.id == @comment[:user_id] 
+    if @user.id == @comment.user_id 
       if @comment.update(comment_params)
-        #render json: @comment, serializer: CommentSerializer
-        render :json => @comment.to_json
+        render json: @comment, serializer: CommentSerializer
       else
-        #render json: @comment.errors, status: :unprocessable_entity
-        render :json => @comment.errors.to_json, status: :unprocessable_entity
+        render json: @comment.errors, status: :unprocessable_entity
       end
     else
       puts "Unauthorized access"
@@ -45,6 +40,10 @@ class CommentsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
       @comment = Comment.find(params[:id])
+    end
+
+    def comment_params
+      params.require(:comment).permit(:Comment_Comment)
     end
 
     def rol

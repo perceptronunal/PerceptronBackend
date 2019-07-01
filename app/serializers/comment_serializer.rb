@@ -4,9 +4,6 @@ class CommentSerializer < ActiveModel::Serializer
     :commenteable_type,
     :commenteable_id,
     :user_id
-  
-    belongs_to :commenteable, polymorphic: true    
-    belongs_to :user
     
   end
   

@@ -1,36 +1,35 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy, :user_comments]
   before_action :rol, only: [:update, :destroy]
   before_action :authenticate_login, only: [:update, :destroy]
 
   # GET /users
   def index
     @users = User.paginate(page: params[:page], per_page:25)
-
     render json: @users
   end
 
   # GET /users/1
   def show
     render json: @user
-    
+  end
+
+  def user_comments
+    render json: Comment.where(user_id: @user.id)
   end
 
   # POST /users
   def create
     @user = User.new(user_params)
 
-
-    respond_to do |format|
-      if @user.save
-        # Tell the UserMailer to send a welcome email after save
-        @login = Login.new(email: @user.User_Email, password_digest: @user.password_digest)
-        @login.save
-        WelcomeMailer.welcome_email(@user).deliver_now!
-        format.json { render json: @user, status: :created, location: @user }
-      else
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.save
+      # Tell the UserMailer to send a welcome email after save
+      @login = Login.new(email: @user.User_Email, password_digest: @user.password_digest)
+      @login.save
+      WelcomeMailer.welcome_email(@user).deliver_now!
+      render json: @user, status: :created, location: @user
+    else
+      render json: @user.errors, status: :unprocessable_entity
     end
 
     @login = Login.new(email: @user.User_Email, password_digest: @user.password_digest)
@@ -42,7 +41,7 @@ class UsersController < ApplicationController
     if current_login[:id] == @user.id
       @login = Login.find_by(email: @user.User_Email)
       if @user.update(user_params)
-       render json: @user
+       render json: @user, status: :created, location: @user
       else
        render json: @user.errors, status: :unprocessable_entity
       end
@@ -57,8 +56,8 @@ class UsersController < ApplicationController
   end
 
   def likes
-    @users = User.paginate_by_sql(User.usersToLikes(params[:id]), :page => @page, :per_page => 70)
-    render json: @users
+    @connections = User.paginate_by_sql(User.usersToLikes(params[:id]), :page => @page, :per_page => 70)
+    render json: @connections, each_serializer: ConnectionSerializer
   end
 
   private

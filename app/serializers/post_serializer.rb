@@ -5,9 +5,8 @@ class PostSerializer < ActiveModel::Serializer
     :Post_Tag,
     :organization_id
   
-    belongs_to :organization
-    has_many :comments, as: :commenteable
-    has_many :resources, as: :resourceable
+    #has_many :comments, as: :commenteable
+    #has_many :resources, as: :resourceable
     
   end
   

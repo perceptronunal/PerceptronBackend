@@ -1,4 +1,4 @@
-class PetSerializer < ActiveModel::Serializer
+class PetShowSerializer < ActiveModel::Serializer
   attributes :id,
   :Pet_Type,
   :Pet_Name,
@@ -9,5 +9,6 @@ class PetSerializer < ActiveModel::Serializer
   :Pet_Sterilized,
   :Pet_Vaccinated,
   :Pet_Description
-  
+
+  has_many :comments
 end
