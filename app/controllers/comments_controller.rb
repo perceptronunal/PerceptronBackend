@@ -18,7 +18,7 @@ class CommentsController < ApplicationController
   # PATCH/PUT /comments/1
   def update
    
-    if @user.id == @comment.user_id 
+    if @user_aut.id == @comment.user_id 
       if @comment.update(comment_params)
         render json: @comment, serializer: CommentSerializer
       else
@@ -48,8 +48,8 @@ class CommentsController < ApplicationController
 
     def rol
       if !current_login.nil?
-        @user = User.find_by(User_Email: current_login[:email])
-        @organization = Organization.find_by(Organization_Email: current_login[:email])
+        @user_aut = User.find_by(User_Email: current_login[:email])
+        @organization_aut = Organization.find_by(Organization_Email: current_login[:email])
       end
     end
 end
