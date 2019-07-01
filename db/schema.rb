@@ -10,10 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_30_065229) do
+ActiveRecord::Schema.define(version: 2019_06_30_191330) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "comments", force: :cascade do |t|
     t.text "Comment_Comment"
@@ -90,6 +111,17 @@ ActiveRecord::Schema.define(version: 2019_06_30_065229) do
     t.index ["organization_id"], name: "index_posts_on_organization_id"
   end
 
+  create_table "profilepictures", force: :cascade do |t|
+    t.string "ProfilePicture_Link"
+    t.string "ProfilePicture_Filename"
+    t.integer "ProfilePicture_Bytesize"
+    t.string "profilepicturesable_type"
+    t.bigint "profilepicturesable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["profilepicturesable_type", "profilepicturesable_id"], name: "my_index"
+  end
+
   create_table "resources", force: :cascade do |t|
     t.string "Resource_Type"
     t.string "Resource_Link"
@@ -97,6 +129,8 @@ ActiveRecord::Schema.define(version: 2019_06_30_065229) do
     t.bigint "resourceable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "filename"
+    t.integer "bytesize"
     t.index ["resourceable_type", "resourceable_id"], name: "index_resources_on_resourceable_type_and_resourceable_id"
   end
 
@@ -110,5 +144,6 @@ ActiveRecord::Schema.define(version: 2019_06_30_065229) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "users"
 end

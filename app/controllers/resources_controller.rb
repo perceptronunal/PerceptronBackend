@@ -11,7 +11,16 @@ class ResourcesController < ApplicationController
 
   # GET /resources/1
   def show
-    render json: @resource
+    # data = open('https://petshappy2.s3-us-west-1.amazonaws.com/'+ @resource.file.key) 
+    # send_data data.read, type: @resource.file.content_type, disposition: 'inline'
+    # send_file @resource.path_file(@resource.file), type: @resource.file.content_type, disposition: 'inline'
+    redirect_to @resource.path_file(@resource.file)
+    # render json: @resource
+  end
+
+  # GET /resources/new
+  def new
+    @resource = Resource.new
   end
 
   # POST /resources
@@ -36,6 +45,10 @@ class ResourcesController < ApplicationController
     end
 
     if @resource.save
+      @resource.Resource_Link = 'https://petshappy2.s3-us-west-1.amazonaws.com/'+ @resource.file.key
+      @resource.filename = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).filename
+      @resource.bytesize = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).byte_size
+      @resource.Resource_Type = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).content_type
       render json: @resource, status: :created, location: @resource
     else
       render json: @resource.errors, status: :unprocessable_entity
@@ -45,6 +58,10 @@ class ResourcesController < ApplicationController
   # PATCH/PUT /resources/1
   def update
     if @resource.update(resource_params_poly)
+      @resource.link = 'https://petshappy2.s3-us-west-1.amazonaws.com/'+ @resource.file.key
+      @resource.filename = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).filename
+      @resource.bytesize = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).byte_size
+      @resource.Resource_Type = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).content_type
       render json: @resource
     else
       render json: @resource.errors, status: :unprocessable_entity
@@ -64,10 +81,10 @@ class ResourcesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def resource_params
-      params.require(:resource).permit(:Resource_Type, :Resource_Link)
+      params.require(:resource).permit(:Resource_Type, :file)
     end
 
     def resource_params_poly
-      params.require(:resource).permit(:Resourceable_Type, :Resourceable_Id)
+      params.require(:resource).permit(:Resourceable_Type, :Resourceable_Id, :file)
     end
 end

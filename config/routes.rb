@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :profilepictures
   #Google Auth Verification
   post 'google_auth' => 'google_auth#create'
 
