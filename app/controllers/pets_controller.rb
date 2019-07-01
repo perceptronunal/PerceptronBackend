@@ -77,9 +77,11 @@ class PetsController < ApplicationController
   def create_comments
     comment = Comment.new(comment_params)
     if comment.save
-      render json: comment, status: :created, location: comment, serializer: PetSerializer
+      #render json: comment, status: :created, location: comment, serializer: CommentSerializer
+      render :json => comment.to_json, status: :created
     else
-      render json: comment.errors, status: :unprocessable_entity
+      #render json: comment.errors, status: :unprocessable_entity
+      render :json => comment.errors.to_json, status: :unprocessable_entity
     end
   end
 
@@ -108,7 +110,7 @@ class PetsController < ApplicationController
     @connection.save
     
     if (@connection.connectable_type == "User")
-      WelcomeMailer.you_have_adopted_user(User.find(@connection.connectable_id)).deliver_now!
+      WelcomeMailer.you_have_adopted_user(User.find(@connection.connectable_id), Pet.find(@connection.pet_id), ).deliver_now!
     else
       WelcomeMailer.you_have_adopted_organization(Organization.find(@connection.connectable_id)).deliver_now!
     end
