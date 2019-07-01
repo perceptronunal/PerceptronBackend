@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   get 'organizations/current' => 'organizations#current'
   get 'logins/current' => 'logins#current'
   #statistics of a post's tag
-  get 'statistics', to: 'statistics#count_tag'
+  get 'statistics' => 'statistics#count_tag'
+  get 'statistics/index' => 'statistics#index'
   
   post 'contact' => 'contact#contact'
 
