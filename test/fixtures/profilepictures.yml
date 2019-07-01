@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ProfilePicture_Link: MyString
+  ProfilePicture_Filename: MyString
+  ProfilePicture_Bytesize: 1
+
+two:
+  ProfilePicture_Link: MyString
+  ProfilePicture_Filename: MyString
+  ProfilePicture_Bytesize: 1

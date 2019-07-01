@@ -1,28 +1,21 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :update, :destroy]
-  before_action :rol, only: [:create, :update, :destroy]
+  before_action :rol, only: [:update, :destroy]
   before_action :authenticate_login, only: [:create, :update, :destroy]
 
   # GET /comments
   def index
-    commenteable = Pet.find(params[:id])
-    comments = commenteable.comments.paginate(page: params[:page], per_page:25)
-    #@comments = Comment.paginate(page: params[:page], per_page:25)
-    render json: comments, serializar: CommentSerializer
+    @comments = Comment.paginate(page: params[:page], per_page:25)
+    #error serialization
+    #render json: @comments, serializer: CommentSerializer
+    render :json => @comments.to_json
   end
 
   # GET /comments/1
   def show
-    render json: comments, serializar: CommentSerializer
-  end
-
-  # POST /comments
-  def create
-    if @comment.save
-      render json: @comment, status: :created, location: @comment, serializar: CommentSerializer
-    else
-      render json: @comment.errors, status: :unprocessable_entity
-    end
+    #error serialization
+    #render json: @comment, serializer: CommentSerializer
+    render :json => @comment.to_json
   end
 
   # PATCH/PUT /comments/1
@@ -30,9 +23,11 @@ class CommentsController < ApplicationController
    
     if @user.id == @comment[:user_id] 
       if @comment.update(comment_params)
-        render json: @comment, serializar: CommentSerializer
+        #render json: @comment, serializer: CommentSerializer
+        render :json => @comment.to_json
       else
-        render json: @comment.errors, status: :unprocessable_entity
+        #render json: @comment.errors, status: :unprocessable_entity
+        render :json => @comment.errors.to_json, status: :unprocessable_entity
       end
     else
       puts "Unauthorized access"
@@ -50,14 +45,6 @@ class CommentsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
       @comment = Comment.find(params[:id])
-    end
-
-    def comment_params
-      params.require(:comment).permit(:Comment_Comment)
-    end
-
-    def comment_params_poly
-      params.require(:comment).permit(:Commenteable_Type, :Commenteable_Id)
     end
 
     def rol

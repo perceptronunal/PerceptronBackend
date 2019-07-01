@@ -98,7 +98,13 @@
 <body yahoo="fix" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 	
 	<!-- ======= main section ======= -->
-	<table border="0" width="100%" cellpadding="0" cellspacing="0" bgcolor="2b2e34" style="background-image: url(https://elalebrijeudl.files.wordpress.com/2015/09/perros-gatos-2.jpg ); background-size: 100% 100%; background-position: top center;" background="http://themastermail.com/alerta/notif9/img/bg.png">
+
+	<% if @pet.Pet_Type == "Perro" %>
+		<% url = "http://www.psicohuella.es/wp-content/uploads/2018/11/o-PERRO-IDEAL-ZODIACO-facebook.jpg"%> 
+	<% else %>
+		<% url = "https://imagendegatos.com/wp-content/uploads/2017/06/Im%C3%A1genes-De-Gatos-En-grupo-En-Png.jpg"%>
+	<% end %>
+	<table border="0" width="100%" cellpadding="0" cellspacing="0" bgcolor="2b2e34" style="background-image: url(<%=url%>); background-size: 100% 100%; background-position: top center;" background="http://themastermail.com/alerta/notif9/img/bg.png">
 		
 		<tr><td height="90" style="font-size: 90px; line-height: 90px;">&nbsp;</td></tr>
 		
@@ -118,7 +124,7 @@
 					<tr>
 						<!-- ======= logo ======= -->
 						<td align="center" class="section-img">
-							<a href="" style="display: block; border-style: none !important; border: 0 !important;"><img width="510" border="0" style="display: block; margin: 60px 0px 20px 0px; width: 270px;" src="https://camo.githubusercontent.com/ec8d562e26d2a497ad1568a05bc8806b77e5a8a2/68747470733a2f2f692e6962622e636f2f51667359666b422f48617070792d506574732e6a7067" alt="logo" /></a>
+							<a href="" style="display: block; border-style: none !important; border: 0 !important;"><img width="510" border="0" style="display: block; margin: 60px 0px 20px 0px; width: 270px;" src="//www.stukent.com/wp-content/uploads/2015/05/Stukent_Signature_BlueBlue2751.png" alt="logo" /></a>
 						</td>			
 					</tr>
 					
@@ -131,7 +137,7 @@
 							
 							<div style="line-height: 30px;">
 	        					
-	        						Welcome to HappyPets, <%= @user.User_Name %>
+								Congratulations!!, <%= @user.User_Name %>
 	        					
 							</div>
         				</td>
@@ -147,13 +153,12 @@
 										<div style="line-height: 24px">
 											
 											<!-- ======= section text ======= -->    
-                      
-
-  <p>
-    You have successfully signed up to HappyPets,
-    your username is: <%= @user.User_Name %>.<br>
-  </p>
-<p>Thanks for joining and have a great day!</p>
+											<p>
+												You've adopted to <%= @pet.Pet_Name %>. Contact 
+												<%= @owner.User_Name%> as soon as possible.
+												<br/>
+												Have fun with your new friend.
+											</p>
 										</div>
 			        				</td>	
 								</tr>
@@ -176,7 +181,7 @@
 	                					<!-- ======= main section button ======= -->
 	                					
 		                    			<div style=" line-height: 24px;">
-			                    			<a href="" style="font-size: 17px; color: #ffffff; text-decoration: none;">Visit us!</a> 
+			                    			<a href="" style="font-size: 17px; color: #ffffff; text-decoration: none;">Access Course</a> 
 		                    			</div>
                             
 		                    		</td>
@@ -213,7 +218,7 @@
 								<!-- ======= section text ======= -->
 								
 	        					
-	        						www.happypets.com
+	        						www.stukent.com
 	        					
 							</div>
         				</td>	

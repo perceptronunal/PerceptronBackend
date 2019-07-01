@@ -26,7 +26,7 @@ class UsersController < ApplicationController
         # Tell the UserMailer to send a welcome email after save
         @login = Login.new(email: @user.User_Email, password_digest: @user.password_digest)
         @login.save
-        WelcomeMailer.welcome_email(@user).deliver_now
+        WelcomeMailer.welcome_email(@user).deliver_now!
         format.json { render json: @user, status: :created, location: @user }
       else
         format.json { render json: @user.errors, status: :unprocessable_entity }
@@ -39,12 +39,12 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if current_login[:id] == @user[:user_id]
+    if current_login[:id] == @user.id
       @login = Login.find_by(email: @user.User_Email)
       if @user.update(user_params)
-        render json: @user
+       render json: @user
       else
-        render json: @user.errors, status: :unprocessable_entity
+       render json: @user.errors, status: :unprocessable_entity
       end
       @login.update(email: @user.User_Email, password_digest: @user.password_digest)
     end

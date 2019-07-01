@@ -30,6 +30,7 @@ class Organization < ApplicationRecord
     has_many :posts, dependent: :destroy
     has_many :resources, as: :resourceable, dependent: :destroy
     has_many :connections, as: :commenteable, dependent: :destroy
+    has_one :profilepictures, as: :profilepicturesable, dependent: :destroy
 
     scope :Organization_Validation, -> { where(Organization_Validation: true) }
 

@@ -7,12 +7,12 @@ class PostsController < ApplicationController
   def index
     @posts = Post.paginate(page: params[:page], per_page:25)
 
-    render json: @posts, serializar: PostSerializer
+    render json: @posts, serializer: PostSerializer
   end
 
   # GET /posts/1
   def show
-    render json: @post, serializar: PostSerializer
+    render json: @post, serializer: PostSerializer
   end
 
   # POST /posts
@@ -56,9 +56,11 @@ class PostsController < ApplicationController
   def create_comments
     comment = Comment.new(comment_params)
     if comment.save
-      render json: comment, status: :created, location: comment, serializar: PostCommet
+      #render json: comment, status: :created, location: comment, serializar: PostCommet
+      render :json => comment.to_json, status: :created
     else
-      render json: comment.errors, status: :unprocessable_entity
+      #render json: comment.errors, status: :unprocessable_entity
+      render :json => comment.errors.to_json, status: :unprocessable_entity
     end
   end
 

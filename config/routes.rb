@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :profilepictures
   #Google Auth Verification
   post 'google_auth' => 'google_auth#create'
 
@@ -8,6 +9,12 @@ Rails.application.routes.draw do
   get 'users/current' => 'users#current'
   get 'organizations/current' => 'organizations#current'
   get 'logins/current' => 'logins#current'
+  #statistics of a post's tag
+  get 'statistics' => 'statistics#count_tag'
+  get 'statistics/index' => 'statistics#index'
+  
+  post 'contact' => 'contact#contact'
+
   resources :organizations
   resources :resources
   resources :pets do
