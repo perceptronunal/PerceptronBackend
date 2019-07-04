@@ -5,7 +5,7 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.paginate(page: params[:page], per_page:25)
+    @posts = Post.paginate(page: params[:page], per_page:25).order('updated_at DESC')
 
     render json: @posts, each_serializer: PostAllSerializer, include: ['organization', 'resources', 'comments.user']
   end
