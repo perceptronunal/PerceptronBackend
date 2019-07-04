@@ -37,6 +37,7 @@ Rails.application.routes.draw do
     member do
       get 'comments', action: :comments, controller: 'posts'
       post 'comments', action: :create_comments, controller: 'posts'
+      post 'resources', action: :create_resource, controller: 'posts'
     end
   end
   resources :connections

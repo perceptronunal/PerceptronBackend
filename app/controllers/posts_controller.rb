@@ -58,6 +58,26 @@ class PostsController < ApplicationController
     end
   end
 
+  def create_resource
+    
+    resource = Resource.new(file: resource_params[:file], resourceable_type: "Post", resourceable_id: params[:id])
+    
+    if resource.save
+      link = 'https://petshappy2.s3-us-west-1.amazonaws.com/'+ resource.file.key
+      file = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).filename
+      byte = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).byte_size
+      type = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).content_type
+      
+      resource.update(Resource_Link: link, filename: file, bytesize: byte, Resource_Type: type)
+      
+      #render json: resource, status: :created, location: resource
+      render :json => resource, status: :created, location: resource
+    else
+      #render json: resource.errors, status: :unprocessable_entity
+      render :json => resource.errors, status: :unprocessable_entity
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
@@ -71,6 +91,10 @@ class PostsController < ApplicationController
 
     def comment_params
       params.require(:comment).permit(:Comment_Comment)
+    end
+
+    def resource_params
+      params.permit(:file)
     end
 
     def rol
