@@ -42,7 +42,8 @@ class UsersController < ApplicationController
       link = 'https://petshappy2.s3-us-west-1.amazonaws.com/'+ resource.file.key
       file = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).filename
       byte = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).byte_size
-      type = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).content_type
+      #type = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).content_type
+      type = 'profile'
       
       resource.update(Resource_Link: link, filename: file, bytesize: byte, Resource_Type: type)
       

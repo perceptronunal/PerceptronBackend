@@ -21,7 +21,7 @@ class PostsController < ApplicationController
       @post = Post.new(post_params)
 
       if @post.save
-        render json: @post, status: :created, location: @post, serializar: PostSerializer
+        render json: @post, status: :created, location: @post, serializer: PostSerializer
       else
         render json: @post.errors, status: :unprocessable_entity
       end
@@ -33,7 +33,7 @@ class PostsController < ApplicationController
     if @organization != nil
       if current_login[:id] == @organization[:organization_id] 
         if @post.update(post_params)
-          render json: @post, serializar: PostSerializer
+          render json: @post, serializer: PostSerializer
         else
           render json: @post.errors, status: :unprocessable_entity
         end

@@ -19,7 +19,7 @@ class User < ApplicationRecord
     #associations
     has_many :resources, as: :resourceable, dependent: :destroy
     has_many :comments, dependent: :destroy
-    has_many :connections, as: :commenteable, dependent: :destroy
+    has_many :connections, as: :connectable, dependent: :destroy
     has_one :profilepictures, as: :profilepicturesable, dependent: :destroy
     
     def self.allPublications
