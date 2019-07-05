@@ -33,7 +33,7 @@ class OrganizationsController < ApplicationController
   def update
     if current_organization[:id] == @organization.id
       @login = Login.find_by(email: @organization.Organization_Email)
-      if @organization.update(organization_params)
+      if @organization.update(organization_params_update)
         render json: @organization
       else
         render json: @organization.errors, status: :unprocessable_entity
@@ -58,6 +58,10 @@ class OrganizationsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def organization_params
       params.require(:organization).permit(:Organization_Name, :Organization_Address, :Organization_Phone, :Organization_Email, :Organization_Website, :Organization_Description, :Organization_Validation, :password)
+    end
+
+    def organization_params_update
+      params.require(:organization).permit(:Organization_Name, :Organization_Address, :Organization_Phone, :Organization_Email, :Organization_Website, :Organization_Description, :Organization_Validation)
     end
 
     def rol

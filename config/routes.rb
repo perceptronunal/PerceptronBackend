@@ -46,7 +46,9 @@ Rails.application.routes.draw do
       get 'likes', action: :likes, controller: 'users'
       get 'comments', action: :user_comments, controller: 'users'
     end
-
+    collection do
+      post 'upload', action: :upload_profile, controller: 'users'
+    end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
