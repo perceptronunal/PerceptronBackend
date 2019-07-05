@@ -10,12 +10,11 @@ class ResourcesController < ApplicationController
   end
 
   # GET /resources/1
-  def show
-    # data = open('https://petshappy2.s3-us-west-1.amazonaws.com/'+ @resource.file.key) 
-    # send_data data.read, type: @resource.file.content_type, disposition: 'inline'
-    # send_file @resource.path_file(@resource.file), type: @resource.file.content_type, disposition: 'inline'
-    redirect_to @resource.path_file(@resource.file)
-    # render json: @resource
+  def show     
+    #redirect_to @resource.path_file(@resource.file)    
+    link = @resource.path_file(@resource.file)
+    response = HTTParty.get(link)
+    send_data(response, disposition: 'inline', type: @resource.file.content_type)
   end
 
   # GET /resources/new
