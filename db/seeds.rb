@@ -29,7 +29,8 @@ end
         User_Email: Faker::Internet.unique.free_email,
         User_Phone: Faker::PhoneNumber.cell_phone,
         User_City: Faker::Nation.capital_city,
-        password: Faker::Games::LeagueOfLegends.champion
+        password: Faker::Games::LeagueOfLegends.champion,
+        created_at: rand((Time.now - 1.years)..(Time.now))
     )
 end
 
