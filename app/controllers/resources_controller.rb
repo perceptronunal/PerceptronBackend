@@ -13,7 +13,8 @@ class ResourcesController < ApplicationController
   def show     
     #redirect_to @resource.path_file(@resource.file)    
     link = @resource.path_file(@resource.file)
-    response = HTTParty.get(link)
+    header = {'Access-Control-Allow-Origin': '*', 'content-type': 'multipart/form-data', 'Access-Control-Allow-Headers':'origin, content-type, accept'}
+    response = HTTParty.get(link, header)
     send_data(response, disposition: 'inline', type: @resource.file.content_type)
   end
 
