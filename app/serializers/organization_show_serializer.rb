@@ -1,4 +1,4 @@
-class OrganizationSerializer < ActiveModel::Serializer
+class OrganizationShowSerializer < ActiveModel::Serializer
   attributes :id,
   :Organization_Name,
   :Organization_Address,
@@ -7,18 +7,24 @@ class OrganizationSerializer < ActiveModel::Serializer
   :Organization_Website,
   :Organization_Description,
   #:Organization_Validation,
+  :posts,
+  :pets,
   :created_at,
   :updated_at,
-  :profile,
-  :resources
+  :profile
+
+  def posts
+    object.posts.count
+  end
+
+  def pets
+    object.connections.where(Connection_Type: 'Publicar').count
+  end
 
   def profile
     profile = object.resources.where(Resource_Type: 'profile')
     profile[0]
   end
 
-  def resources
-    object.resources.where.not(Resource_Type: 'profile')
-  end
-
+  has_many :resources, as: :resourceable
 end

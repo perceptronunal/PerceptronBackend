@@ -12,7 +12,7 @@ class OrganizationsController < ApplicationController
 
   # GET /organizations/1
   def show
-    render json: @organization, serializer: OrganizationSerializer
+    render json: @organization, serializer: OrganizationShowSerializer
   end
 
   # POST /organizations
@@ -20,13 +20,18 @@ class OrganizationsController < ApplicationController
     @organization = Organization.new(organization_params)
 
     if @organization.save
+      @login = Login.new(email: @organization.Organization_Email, password_digest: @organization.password_digest)
+      @login.save
+
+      @resource = profile_default(Organization.find_by(Organization_Email: @organization.Organization_Email))
+      @resource.save
+
       render json: @organization, status: :created, location: @organization, serializer: OrganizationSerializer
     else
       render json: @organization.errors, status: :unprocessable_entity
     end
 
-    @login = Login.new(email: @organization.Organization_Email, password_digest: @organization.password_digest)
-    @login.save
+
   end
   def upload_profile
     resource = Resource.new(file: resource_params[:file], resourceable_type: "Organization", resourceable_id: @organization_aut.id)
@@ -46,10 +51,10 @@ class OrganizationsController < ApplicationController
   end
   # PATCH/PUT /organizations/1
   def update
-    if current_organization[:id] == @organization_aut.id
+    if @organization_aut.id == @organization.id
       @login = Login.find_by(email: @organization.Organization_Email)
       if @organization.update(organization_params_update)
-        render json: @organization, serializer: OrganizationSerializer
+        render json: @organization, status: 200, location: @organization, serializer: OrganizationSerializer
       else
         render json: @organization.errors, status: :unprocessable_entity
       end
@@ -81,6 +86,17 @@ class OrganizationsController < ApplicationController
 
     def organization_params_update
       params.require(:organization).permit(:Organization_Name, :Organization_Address, :Organization_Phone, :Organization_Email, :Organization_Website, :Organization_Description, :Organization_Validation)
+    end
+
+    def profile_default(organization)
+      Resource.create(
+        Resource_Type: "profile",
+        Resource_Link: "https://petshappy2.s3-us-west-1.amazonaws.com/user.png",
+        resourceable_type: "Organization",
+        resourceable_id: organization.id,
+        filename: "user.png",
+        bytesize: 6000
+      )
     end
 
     def rol

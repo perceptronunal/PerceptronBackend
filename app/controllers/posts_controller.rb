@@ -1,13 +1,12 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :update, :destroy, :comments]
   before_action :rol, only: [:create, :update, :destroy, :create_comments]
-  before_action :authenticate_login, only: [:create, :update, :destroy]
 
   # GET /posts
   def index
     @posts = Post.paginate(page: params[:page], per_page:25).order('updated_at DESC')
 
-    render json: @posts, each_serializer: PostAllSerializer, include: ['organization', 'resources', 'comments.user']
+    render json: @posts, each_serializer: PostAllSerializer, include: ['organization', 'organization.resources', 'resources','comments.user']
   end
 
   # GET /posts/1
@@ -21,7 +20,7 @@ class PostsController < ApplicationController
       @post = Post.new(post_params)
 
       if @post.save
-        render json: @post, status: :created, location: @post, serializer: PostSerializer
+        render json: @post, status: :created, location: @post, serializer: PostAllSerializer, include: ['organization', 'organization.resources', 'resources']
       else
         render json: @post.errors, status: :unprocessable_entity
       end

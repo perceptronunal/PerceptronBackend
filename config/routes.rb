@@ -48,7 +48,7 @@ Rails.application.routes.draw do
       get 'comments', action: :user_comments, controller: 'users'
     end
     collection do
-      post 'upload', action: :upload_profile, controller: 'users'
+      put 'upload', action: :upload_profile, controller: 'users'
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
