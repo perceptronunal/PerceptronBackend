@@ -1,6 +1,10 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :User_Name, :User_Email, :User_Phone, :User_City, :pets, :interested_pets, :profile, :resources
+  attributes :user, :id, :User_Name, :User_Email, :User_Phone, :User_City, :pets, :interested_pets, :profile, :resources
   
+  def user
+    object.class.to_s
+  end
+
   def pets
     object.connections.where(Connection_Type: 'Publicar').count
   end

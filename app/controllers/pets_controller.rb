@@ -89,7 +89,14 @@ class PetsController < ApplicationController
   end
 
   def create_interest
-    @connection = Connection.new(Connection_Type: "Interesado", pet_id: @pet[:id], connectable_type: User, connectable_id: @user.id)
+
+    if @user == nil
+      auth = @organization
+    else
+      auth = @user
+    end
+
+    @connection = Connection.new(Connection_Type: "Interesado", pet_id: @pet[:id], connectable_type: auth.class.to_s, connectable_id: auth.id)
     if @connection.save
       render json: @connection, status: :created, location: @connection, serializer: ConnectionSerializer
     else
@@ -98,7 +105,14 @@ class PetsController < ApplicationController
   end
 
   def create_adoption
-    @connection = Connection.new(Connection_Type: "Adoptar", pet_id: @pet[:id], connectable_type: User, connectable_id: @user.id)
+
+    if @user == nil
+      auth = @organization
+    else
+      auth = @user
+    end
+
+    @connection = Connection.new(Connection_Type: "Adoptar", pet_id: @pet[:id], connectable_type: auth.class.to_s, connectable_id: auth.id)
     if @connection.save
       render json: @connection, status: :created, location: @connection, serializer: ConnectionSerializer
     else
@@ -107,24 +121,23 @@ class PetsController < ApplicationController
   end
 
   def confirm_adoption
-    @connection = Connection.new(Connection_Type: "Adoptado", pet_id: @pet[:id], connectable_type: User, connectable_id: adopter[:user_id])
+
+
+    @connection = Connection.new(Connection_Type: "Adoptado", pet_id: @pet[:id], connectable_type: adopter[:connectable_type], connectable_id: adopter[:connectable_id])
     if @connection.save
       render json: @connection, status: :created, location: @connection, serializer: ConnectionSerializer
     else
       render json: @connection.errors, status: :unprocessable_entity
     end
     
-    if (@connection.connectable_type == "User")
-      WelcomeMailer.you_have_adopted_user(User.find(@connection.connectable_id), Pet.find(@connection.pet_id), ).deliver_now!
-    else
-      WelcomeMailer.you_have_adopted_organization(Organization.find(@connection.connectable_id)).deliver_now!
-    end
+    #if (@connection.connectable_type == "User")
+    #  WelcomeMailer.you_have_adopted_user(User.find(@connection.connectable_id), Pet.find(@connection.pet_id), ).deliver_now!
+    #else
+    #  WelcomeMailer.you_have_adopted_organization(Organization.find(@connection.connectable_id)).deliver_now!
+    #end
     
-    if @pet.update(Pet_Visible: false)
-      render json: @pet, serializer: PetSerializer
-    else
-      render json: @pet.errors, status: :unprocessable_entity
-    end
+    @pet.update(Pet_Visible: false)
+
   end
 
   def found
@@ -158,7 +171,7 @@ class PetsController < ApplicationController
     end
 
     def adopter
-      params.require(:pet).permit(:user_id)
+      params.require(:pet).permit(:connectable_type, :connectable_id)
     end
 
     def comment_params

@@ -1,5 +1,6 @@
 class OrganizationSerializer < ActiveModel::Serializer
   attributes :id,
+  :organization,
   :Organization_Name,
   :Organization_Address,
   :Organization_Phone,
@@ -9,13 +10,17 @@ class OrganizationSerializer < ActiveModel::Serializer
   #:Organization_Validation,
   :posts,
   :pets,
-  :interested_organizations,
+  :interested_pets,
   :created_at,
   :updated_at,
   :profile,
   :resources
 
-  def interested_organizations
+  def organization
+    object.class.to_s
+  end
+
+  def interested_pets
     object.connections.where(Connection_Type: 'Interesado').count
   end
 

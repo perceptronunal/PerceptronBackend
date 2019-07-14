@@ -2,13 +2,14 @@ class OrganizationShowSerializer < ActiveModel::Serializer
   attributes :id,
   :Organization_Name,
   :Organization_Address,
-  #:Organization_Phone,
+  :Organization_Phone,
   :Organization_Email,
   :Organization_Website,
   :Organization_Description,
   #:Organization_Validation,
   :posts,
   :pets,
+  :interested_pets,
   :created_at,
   :updated_at,
   :profile
@@ -19,6 +20,10 @@ class OrganizationShowSerializer < ActiveModel::Serializer
 
   def pets
     object.connections.where(Connection_Type: 'Publicar').count
+  end
+
+  def interested_pets
+    object.connections.where(Connection_Type: 'Interesado').count
   end
 
   def profile
