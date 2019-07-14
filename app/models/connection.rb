@@ -17,7 +17,7 @@ class Connection < ApplicationRecord
 
     #associations
     belongs_to :pet
-    belongs_to :connectable, polymorphic: true    
+    belongs_to :connectable, polymorphic: true
 
 
 end

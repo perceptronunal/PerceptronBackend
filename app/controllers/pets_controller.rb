@@ -64,7 +64,7 @@ class PetsController < ApplicationController
 
   def publications
     @connections = Connection.where(Connection_Type: "Publicar")
-    @connections.paginate(page: params[:page], per_page: 50)
+    #@connections.paginate(page: params[:page], per_page: 50)
     render json: @connections, each_serializer: ConnectionSerializer, include: ['connectable', 'pet', 'pet.connections','pet.comments.user']
   end
 
@@ -78,8 +78,9 @@ class PetsController < ApplicationController
   end
 
   def losts
-    @pets = Pet.paginate_by_sql(Pet.petsToFind, :page => @page, :per_page => 25)
-    render json: @pets, each_serializer: PetIndexSerializer
+    @connections = Connection.where(Connection_Type: "Perdido")
+    #@connections.paginate(page: params[:page], per_page: 50)
+    render json: @connections, each_serializer: ConnectionSerializer, include: ['connectable', 'pet', 'pet.connections','pet.comments.user']
   end
 
   def adopt

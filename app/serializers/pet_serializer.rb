@@ -9,18 +9,23 @@ class PetSerializer < ActiveModel::Serializer
   :Pet_Sterilized,
   :Pet_Vaccinated,
   :Pet_Description,
-  :resources,
-  :connections
+  :adopted,
+  :found,
+  :resources
 
   has_many :comments, as: :commenteable,  serializer: CommentSerializer
-
 
   def resources
     object.resources
   end
 
-  has_many :connections do
-    object.connections.where(Connection_Type: 'Adoptado')
+  def adopted
+    object.connections.where(Connection_Type: 'Adoptado').first().as_json
   end
+
+  def found
+    object.connections.where(Connection_Type: 'Encontrado').first().as_json
+  end
+
 
 end
