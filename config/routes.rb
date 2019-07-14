@@ -16,7 +16,11 @@ Rails.application.routes.draw do
   
   post 'contact' => 'contact#contact'
 
-  resources :organizations
+  resources :organizations do
+    collection do
+      put 'upload', action: :upload_profile, controller: 'organizations'
+    end
+  end
   resources :resources
   resources :pets do
     member do
