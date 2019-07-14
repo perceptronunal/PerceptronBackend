@@ -8,6 +8,19 @@ class PetSerializer < ActiveModel::Serializer
   :Pet_Color,
   :Pet_Sterilized,
   :Pet_Vaccinated,
-  :Pet_Description
-  
+  :Pet_Description,
+  :resources,
+  :connections
+
+  has_many :comments, as: :commenteable,  serializer: CommentSerializer
+
+
+  def resources
+    object.resources
+  end
+
+  has_many :connections do
+    object.connections.where(Connection_Type: 'Adoptado')
+  end
+
 end

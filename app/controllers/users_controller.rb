@@ -28,10 +28,10 @@ class UsersController < ApplicationController
       @resource = profile_default(User.find_by(User_Email: @user.User_Email))
       @resource.save
 
-      render json: {user: @user}, status: :created, location: @user
+      render json: @user, status: :created, location: @user, root: "user", adapter: :json
       
     else
-      render json: {user: @user}.errors, status: :unprocessable_entity
+      render json: @user.errors, status: :unprocessable_entity, root: "user", adapter: :json
     end
     
   end

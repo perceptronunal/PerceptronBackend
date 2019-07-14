@@ -7,11 +7,30 @@ class OrganizationSerializer < ActiveModel::Serializer
   :Organization_Website,
   :Organization_Description,
   #:Organization_Validation,
+  :posts,
+  :pets,
+  :interested_organizations,
   :created_at,
   :updated_at,
   :profile,
   :resources
 
+  def interested_organizations
+    object.connections.where(Connection_Type: 'Interesado').count
+  end
+
+  def posts
+    object.posts.count
+  end
+
+  def pets
+    object.connections.where(Connection_Type: 'Publicar').count
+  end
+
+  def profile
+    profile = object.resources.where(Resource_Type: 'profile')
+    profile[0]
+  end
   def profile
     profile = object.resources.where(Resource_Type: 'profile')
     profile[0]

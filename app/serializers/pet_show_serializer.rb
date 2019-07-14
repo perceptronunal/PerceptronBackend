@@ -9,6 +9,8 @@ class PetShowSerializer < ActiveModel::Serializer
   :Pet_Sterilized,
   :Pet_Vaccinated,
   :Pet_Description
+  
 
-  has_many :comments
+  has_many :resources, as: :resourceable
+  has_many :comments, as: :commenteable,  serializer: CommentSerializer
 end

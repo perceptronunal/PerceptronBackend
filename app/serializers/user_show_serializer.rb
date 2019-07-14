@@ -1,5 +1,5 @@
 class UserShowSerializer < ActiveModel::Serializer
-  attributes :User_Name, :User_Email, :User_Phone, :User_City, :pets, :profile, :resources
+  attributes :id, :User_Name, :User_Email, :User_Phone, :User_City, :pets, :profile, :resources
 
   def pets
     object.connections.where(Connection_Type: 'Publicar').count

@@ -34,6 +34,7 @@ class Pet < ApplicationRecord
     has_many :connections, dependent: :destroy
     has_many :comments, as: :commenteable, dependent: :destroy
     has_many :resources, as: :resourceable, dependent: :destroy
+    
     has_many :users, through: :connections, source: :connectable, source_type: 'Pet'
     has_many :organizations, through: :connections, source: :connectable, source_type: 'Pet'
     

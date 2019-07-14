@@ -32,6 +32,9 @@ class Organization < ApplicationRecord
     has_many :connections, as: :connectable, dependent: :destroy
     has_many :pets, through: :connections
     
+    after_save :login_create, on: [:create]
+    after_update :login_update, on: [:update]
+
     scope :Organization_Validation, -> { where(Organization_Validation: true) }
 
     def self.allPublications
@@ -39,9 +42,17 @@ class Organization < ApplicationRecord
         from organizatons inner join posts on organizatons.id = organization_id "
     end
 
-    #Authorization override
-    # def self.from_token_request request
-    #     organization_email = request.params["auth"] && request.params["auth"]["Organization_Email"]
-    #     self.find_by Organization_Email: organization_email
-    # end
+
+
+    private
+    def login_create
+        login = Login.new(email: self.Organization_Email, password_digest: self.password_digest)
+        login.save
+    end
+
+    def login_update
+        login = Login.find_by(email: self.Organization_Email)
+        login.update(email: self.Organization_Email, password_digest: self.password_digest)
+    end
+
 end
