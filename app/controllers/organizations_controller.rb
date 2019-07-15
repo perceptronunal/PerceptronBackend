@@ -1,6 +1,6 @@
 class OrganizationsController < ApplicationController
   before_action :set_organization, only: [:show, :update, :destroy]
-  before_action :rol, only: [:update, :destroy]
+  before_action :rol, only: [:update, :destroy, :upload_profile]
   before_action :authenticate_login, only: [:update, :destroy]
 
   # GET /organizations
@@ -33,21 +33,39 @@ class OrganizationsController < ApplicationController
 
 
   end
+  
   def upload_profile
-    resource = Resource.new(file: resource_params[:file], resourceable_type: "Organization", resourceable_id: @organization_aut.id)
+    @old_resource = @organization_aut.resources.where(Resource_Type: 'profile').first
     
-    if resource.save
-      link = 'https://petshappy2.s3-us-west-1.amazonaws.com/'+ resource.file.key
-      file = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).filename
-      byte = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).byte_size
-      #type = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).content_type
-      type = 'profile'
-      resource.update(Resource_Link: link, filename: file, bytesize: byte, Resource_Type: type)
-      
-      render :json => resource, status: :created, location: resource
+    
+    if @old_resource != nil
+      @old_resource.destroy
     else
-      render :json => resource.errors, status: :unprocessable_entity
+      puts "no habia nada"
     end
+
+    new_resource = Resource.new(file: resource_params[:file], resourceable_type: "Organization", resourceable_id: @organization_aut.id, Resource_Type: 'profile')
+    
+    if new_resource.save
+      puts "bien"
+    else
+      puts "mal"
+    end
+
+    update_resource = @organization_aut.resources.where(Resource_Type: 'profile').first
+
+    if update_resource != nil
+      link = 'https://petshappy2.s3-us-west-1.amazonaws.com/'+ update_resource.file.key
+      file_name = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).filename
+      byte_size = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).byte_size
+
+      if update_resource.update(Resource_Link: link, bytesize: byte_size, filename: file_name)
+        render json: update_resource, status: 200
+      else
+        render json: update_resource.errors, status: :unprocessable_entity
+      end
+    end
+
   end
   # PATCH/PUT /organizations/1
   def update
