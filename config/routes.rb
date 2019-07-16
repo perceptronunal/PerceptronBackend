@@ -10,12 +10,17 @@ Rails.application.routes.draw do
   get 'organizations/current' => 'organizations#current'
   get 'logins/current' => 'logins#current'
   #statistics of a post's tag
-  get 'statistics' => 'statistics#count_tag'
-  get 'statistics/index' => 'statistics#index'
+  get 'statistics/month' => 'statistics#count_month'
+  get 'statistics/tag' => 'statistics#count_tag'
+
   
   post 'contact' => 'contact#contact'
 
-  resources :organizations
+  resources :organizations do
+    collection do
+      put 'upload', action: :upload_profile, controller: 'organizations'
+    end
+  end
   resources :resources
   resources :pets do
     member do
@@ -37,12 +42,17 @@ Rails.application.routes.draw do
     member do
       get 'comments', action: :comments, controller: 'posts'
       post 'comments', action: :create_comments, controller: 'posts'
+      post 'resources', action: :create_resource, controller: 'posts'
     end
   end
   resources :connections
   resources :users do
     member do
       get 'likes', action: :likes, controller: 'users'
+      get 'comments', action: :user_comments, controller: 'users'
+    end
+    collection do
+      put 'upload', action: :upload_profile, controller: 'users'
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

@@ -1,18 +1,17 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :update, :destroy, :comments]
-  before_action :rol, only: [:create, :update, :destroy]
-  before_action :authenticate_login, only: [:create, :update, :destroy]
+  before_action :rol, only: [:create, :update, :destroy, :create_comments]
 
   # GET /posts
   def index
-    @posts = Post.paginate(page: params[:page], per_page:25)
+    @posts = Post.paginate(page: params[:page], per_page:25).order('updated_at DESC')
 
-    render json: @posts, serializer: PostSerializer
+    render json: @posts, each_serializer: PostAllSerializer, include: ['organization', 'organization.resources', 'resources','comments.user']
   end
 
   # GET /posts/1
   def show
-    render json: @post, serializer: PostSerializer
+    render json: @post, serializer: PostShowSerializer
   end
 
   # POST /posts
@@ -21,7 +20,7 @@ class PostsController < ApplicationController
       @post = Post.new(post_params)
 
       if @post.save
-        render json: @post, status: :created, location: @post, serializar: PostSerializer
+        render json: @post, status: :created, location: @post, serializer: PostAllSerializer, include: ['organization', 'organization.resources', 'resources']
       else
         render json: @post.errors, status: :unprocessable_entity
       end
@@ -33,7 +32,7 @@ class PostsController < ApplicationController
     if @organization != nil
       if current_login[:id] == @organization[:organization_id] 
         if @post.update(post_params)
-          render json: @post, serializar: PostSerializer
+          render json: @post, serializer: PostSerializer
         else
           render json: @post.errors, status: :unprocessable_entity
         end
@@ -48,19 +47,33 @@ class PostsController < ApplicationController
     end
   end
 
-  def comments
-    #post = Post.find(params[:id])
-    render :json => @post.comments.to_json
-  end
   
   def create_comments
-    comment = Comment.new(comment_params)
+    comment = Comment.new(Comment_Comment: comment_params[:Comment_Comment], commenteable_type: "Post", commenteable_id: params[:id], user_id: @user.id)
     if comment.save
-      #render json: comment, status: :created, location: comment, serializar: PostCommet
-      render :json => comment.to_json, status: :created
+      render json: comment, status: :created, location: comment, serializer: CommentSerializer
     else
-      #render json: comment.errors, status: :unprocessable_entity
-      render :json => comment.errors.to_json, status: :unprocessable_entity
+      render json: comment.errors, status: :unprocessable_entity
+    end
+  end
+
+  def create_resource
+    
+    resource = Resource.new(file: resource_params[:file], resourceable_type: "Post", resourceable_id: params[:id])
+    
+    if resource.save
+      link = 'https://petshappy2.s3-us-west-1.amazonaws.com/'+ resource.file.key
+      file = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).filename
+      byte = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).byte_size
+      type = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).content_type
+      
+      resource.update(Resource_Link: link, filename: file, bytesize: byte, Resource_Type: type)
+      
+      #render json: resource, status: :created, location: resource
+      render :json => resource, status: :created, location: resource
+    else
+      #render json: resource.errors, status: :unprocessable_entity
+      render :json => resource.errors, status: :unprocessable_entity
     end
   end
 
@@ -76,7 +89,11 @@ class PostsController < ApplicationController
     end
 
     def comment_params
-      params.require(:comment).permit(:Comment_Comment, :commenteable_type, :commenteable_id, :user_id)
+      params.require(:comment).permit(:Comment_Comment)
+    end
+
+    def resource_params
+      params.permit(:file)
     end
 
     def rol

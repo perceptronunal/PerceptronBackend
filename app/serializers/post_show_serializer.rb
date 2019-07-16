@@ -1,4 +1,4 @@
-class PostSerializer < ActiveModel::Serializer
+class PostShowSerializer < ActiveModel::Serializer
   attributes :id,
   :Post_Title,
   :Post_Content,
@@ -7,8 +7,7 @@ class PostSerializer < ActiveModel::Serializer
   :created_at,
   :updated_at
 
+
   has_many :resources, as: :resourceable
   belongs_to :organization
-    
 end
-  

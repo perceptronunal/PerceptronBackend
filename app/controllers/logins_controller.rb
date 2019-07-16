@@ -4,10 +4,10 @@ class LoginsController < ApplicationController
 
     def current
       if @user != nil
-        render json: { user: @user }
+        render json: @user, status: 200, serializer: UserShowSerializer, root: "user", adapter: :json
       end
       if @organization != nil
-        render json: { organization: @organization }
+        render json: @organization, status: 200, root: "organization", adapter: :json
       end
     end
 

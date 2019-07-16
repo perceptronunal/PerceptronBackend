@@ -20,17 +20,20 @@ class Organization < ApplicationRecord
     validates :Organization_Name, presence: true
     validates :Organization_Address, presence: true
     validates :Organization_Phone, presence: true
-    validates :Organization_Email, presence: true
+    validates :Organization_Email, presence: true, uniqueness: true
     #validates :Organization_Website, presence: true
     #validates :Organization_Description, presence: true
     #validates :Organization_Validation, presence: true
-    validates :password, presence: true
+    validates :password, presence: true, :on => :create
 
     #Asociations
     has_many :posts, dependent: :destroy
     has_many :resources, as: :resourceable, dependent: :destroy
-    has_many :connections, as: :commenteable, dependent: :destroy
-    has_one :profilepictures, as: :profilepicturesable, dependent: :destroy
+    has_many :connections, as: :connectable, dependent: :destroy
+    has_many :pets, through: :connections
+    
+    after_save :login_create, on: [:create]
+    after_update :login_update, on: [:update]
 
     scope :Organization_Validation, -> { where(Organization_Validation: true) }
 
@@ -39,9 +42,17 @@ class Organization < ApplicationRecord
         from organizatons inner join posts on organizatons.id = organization_id "
     end
 
-    #Authorization override
-    # def self.from_token_request request
-    #     organization_email = request.params["auth"] && request.params["auth"]["Organization_Email"]
-    #     self.find_by Organization_Email: organization_email
-    # end
+
+
+    private
+    def login_create
+        login = Login.new(email: self.Organization_Email, password_digest: self.password_digest)
+        login.save
+    end
+
+    def login_update
+        login = Login.find_by(email: self.Organization_Email)
+        login.update(email: self.Organization_Email, password_digest: self.password_digest)
+    end
+
 end

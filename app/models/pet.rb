@@ -34,17 +34,20 @@ class Pet < ApplicationRecord
     has_many :connections, dependent: :destroy
     has_many :comments, as: :commenteable, dependent: :destroy
     has_many :resources, as: :resourceable, dependent: :destroy
-
+    
+    has_many :users, through: :connections, source: :connectable, source_type: 'Pet'
+    has_many :organizations, through: :connections, source: :connectable, source_type: 'Pet'
+    
     scope :Pet_Visible, -> { where(Pet_Visible: true) }
 
     def self.petsToAdopt
-        query = " select pets.id, \"Pet_Name\", \"Pet_Gender\", \"Pet_Age\"
+        query = " select pets.id, \"Pet_Name\", \"Pet_Type\", \"Pet_Gender\", \"Pet_Age\"
         from connections inner join pets on pet_id = pets.id
         where \"Pet_Visible\" = true and \"Connection_Type\" = 'Publicar' "
     end
 
     def self.petsToFind
-        query = " select pets.id, \"Pet_Name\", \"Pet_Gender\", \"Pet_Age\", \"connectable_type\", \"connectable_id\"
+        query = " select pets.id, \"Pet_Name\", \"Pet_Type\",\"Pet_Gender\", \"Pet_Age\", \"connectable_type\", \"connectable_id\"
         from connections inner join pets on pet_id = pets.id
         where \"Pet_Visible\" = true and \"Connection_Type\" = 'Perdido' "
     end

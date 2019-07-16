@@ -10,12 +10,12 @@ class ResourcesController < ApplicationController
   end
 
   # GET /resources/1
-  def show
-    # data = open('https://petshappy2.s3-us-west-1.amazonaws.com/'+ @resource.file.key) 
-    # send_data data.read, type: @resource.file.content_type, disposition: 'inline'
-    # send_file @resource.path_file(@resource.file), type: @resource.file.content_type, disposition: 'inline'
-    redirect_to @resource.path_file(@resource.file)
-    # render json: @resource
+  def show     
+    #redirect_to @resource.path_file(@resource.file)    
+    link = @resource.path_file(@resource.file)
+    header = {'Access-Control-Allow-Origin': '*', 'content-type': 'multipart/form-data', 'Access-Control-Allow-Headers':'origin, content-type, accept'}
+    response = HTTParty.get(link, header)
+    send_data(response, disposition: 'inline', type: @resource.file.content_type)
   end
 
   # GET /resources/new
@@ -23,37 +23,6 @@ class ResourcesController < ApplicationController
     @resource = Resource.new
   end
 
-  # POST /resources
-  def create
-    type = resource_params_poly[:Resourceable_Type]
-    id = resource_params_poly[:Resourceable_Id]
-    
-    case type
-    when "post"
-      @post = Post.find(id)
-      @resource = @post.resources.new(resource_params) 
-    when "pet"
-      @pet = Pet.find(id)
-      @resource = @pet.resources.new(resource_params)
-    when "organization"
-      @organization = Organization.find(id)
-      @resource = @organization.resources.new(resource_params) 
-    when "user"
-      @user = User.find(id)
-      @resource = @user.resources.new(resource_params)
-    else
-    end
-
-    if @resource.save
-      @resource.Resource_Link = 'https://petshappy2.s3-us-west-1.amazonaws.com/'+ @resource.file.key
-      @resource.filename = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).filename
-      @resource.bytesize = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).byte_size
-      @resource.Resource_Type = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).content_type
-      render json: @resource, status: :created, location: @resource
-    else
-      render json: @resource.errors, status: :unprocessable_entity
-    end
-  end
 
   # PATCH/PUT /resources/1
   def update

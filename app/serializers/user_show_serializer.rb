@@ -1,17 +1,15 @@
-class UserSerializer < ActiveModel::Serializer
-  attributes :user, :id, :User_Name, :User_Email, :User_Phone, :User_City, :pets, :interested_pets, :profile, :resources
-  
-  def user
-    object.class.to_s
-  end
+class UserShowSerializer < ActiveModel::Serializer
+  attributes :id, :User_Name, :User_Email, :User_Phone, :User_City, :pets, :interested_pets,:profile, :resources
 
   def pets
     object.connections.where(Connection_Type: 'Publicar').count
   end
 
+
   def interested_pets
     object.connections.where(Connection_Type: 'Interesado').count
   end
+  
   
   def profile
     profile = object.resources.where(Resource_Type: 'profile')
@@ -21,5 +19,5 @@ class UserSerializer < ActiveModel::Serializer
   def resources
     object.resources.where.not(Resource_Type: 'profile')
   end
-
+  
 end

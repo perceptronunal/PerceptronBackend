@@ -8,6 +8,9 @@
 
 #Faker
 
+
+
+
 100.times do
     Pet.create(
         Pet_Type: ["Perro", "Gato"].sample, 
@@ -24,17 +27,27 @@
 end
 
 100.times do
-    User.create(
+    user = User.create(
         User_Name: Faker::Name.name_with_middle,
         User_Email: Faker::Internet.unique.free_email,
         User_Phone: Faker::PhoneNumber.cell_phone,
         User_City: Faker::Nation.capital_city,
-        password: Faker::Games::LeagueOfLegends.champion
+        password: Faker::Games::LeagueOfLegends.champion,
+        created_at: rand((Time.now - 1.years)..(Time.now))
+    )
+
+    Resource.create(
+        Resource_Type: "profile",
+        Resource_Link: "https://petshappy2.s3-us-west-1.amazonaws.com/user.png",
+        resourceable_type: "User",
+        resourceable_id: user.id,
+        filename: "user.png",
+        bytesize: 6000
     )
 end
 
 100.times do
-    Organization.create(
+    organization = Organization.create(
         Organization_Name: Faker::Name.name_with_middle,
         Organization_Address: Faker::Address.full_address,
         Organization_Phone: Faker::PhoneNumber.cell_phone,
@@ -43,6 +56,15 @@ end
         Organization_Description: Faker::Lorem.word,
         Organization_Validation: Faker::Boolean.boolean,
         password: Faker::Games::LeagueOfLegends.champion
+    )
+
+    Resource.create(
+        Resource_Type: "profile",
+        Resource_Link: "https://petshappy2.s3-us-west-1.amazonaws.com/user.png",
+        resourceable_type: "Organization",
+        resourceable_id: organization.id,
+        filename: "user.png",
+        bytesize: 6000
     )
 end
 
@@ -77,53 +99,6 @@ end
 end
 
 100.times do
-    case rand(1..4)
-    when 1
-        Resource.create(
-            
-            Resource_Type: Faker::File.extension,
-            Resource_Link: Faker::File.file_name('https://petshappy2.s3-us-west-1.amazonaws.com'),
-            resourceable_type: Pet,
-            resourceable_id: Faker::Number.between(1, 100),
-            filename: Faker::File.mime_type,
-            bytesize: Faker::Number.between(1, 10000) 
-        )
-    when 2
-        Resource.create(
-            
-            Resource_Type: Faker::File.extension,
-            Resource_Link: Faker::File.file_name('https://petshappy2.s3-us-west-1.amazonaws.com'),
-            resourceable_type: Post,
-            resourceable_id: Faker::Number.between(1, 100),
-            filename: Faker::File.mime_type,
-            bytesize: Faker::Number.between(1, 10000) 
-        )
-    when 3
-        Resource.create(
-            
-            Resource_Type: Faker::File.extension,
-            Resource_Link: Faker::File.file_name('https://petshappy2.s3-us-west-1.amazonaws.com'),
-            resourceable_type: User,
-            resourceable_id: Faker::Number.between(1, 100),
-            filename: Faker::File.mime_type,
-            bytesize: Faker::Number.between(1, 10000) 
-        )
-    when 4
-        Resource.create(
-            
-            Resource_Type: Faker::File.extension,
-            Resource_Link: Faker::File.file_name('https://petshappy2.s3-us-west-1.amazonaws.com'),
-            resourceable_type: Organization,
-            resourceable_id: Faker::Number.between(1, 100),
-            filename: Faker::File.mime_type,
-            bytesize: Faker::Number.between(1, 10000) 
-        )
-    else
-        puts "error"
-    end
-end
-
-100.times do
     case rand(1..2)
     when 1
         Comment.create(
@@ -144,27 +119,3 @@ end
     end
 end
 
-100.times do
-    case rand(1..2)
-    when 1
-        Profilepicture.create(
-            
-            ProfilePicture_Link: Faker::File.file_name('https://petshappy2.s3-us-west-1.amazonaws.com'),
-            profilepicturesable_type: User,
-            profilepicturesable_id: Faker::Number.between(1, 100),
-            ProfilePicture_Filename: Faker::File.mime_type,
-            ProfilePicture_Bytesize: Faker::Number.between(1, 10000) 
-        )
-    when 2
-        Profilepicture.create(
-            
-            ProfilePicture_Link: Faker::File.file_name('https://petshappy2.s3-us-west-1.amazonaws.com'),
-            profilepicturesable_type: Organization,
-            profilepicturesable_id: Faker::Number.between(1, 100),
-            ProfilePicture_Filename: Faker::File.mime_type,
-            ProfilePicture_Bytesize: Faker::Number.between(1, 10000) 
-        )
-    else
-        puts "error"
-    end
-end
