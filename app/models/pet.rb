@@ -39,6 +39,7 @@ class Pet < ApplicationRecord
     has_many :organizations, through: :connections, source: :connectable, source_type: 'Pet'
     
     #scope :Pet_Visible, -> { where(Pet_Visible: true) }
+    
 
     def self.petsToAdopt
         query = " select pets.id, \"Pet_Name\", \"Pet_Type\", \"Pet_Gender\", \"Pet_Age\"
@@ -57,5 +58,6 @@ class Pet < ApplicationRecord
         from connections 
         where \"pet_id\" = #{id} and \"Connection_Type\" = 'Adoptar' "
     end
+
     
 end

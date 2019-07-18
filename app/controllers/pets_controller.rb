@@ -51,6 +51,8 @@ class PetsController < ApplicationController
   def create
   
     @pet = Pet.new(pet_params)
+    @pet.Pet_Visible = true
+
     if @pet.save
       if @user != nil
         @connection = Connection.new(Connection_Type: request_parameter[:Connection_Type], pet_id: @pet[:id], connectable_type: User, connectable_id: @user.id)
@@ -185,6 +187,11 @@ class PetsController < ApplicationController
 
     def comment_params
       params.require(:comment).permit(:Comment_Comment)
+    end
+
+
+    def resource_params
+      params.permit(:file)
     end
 
     def rol
