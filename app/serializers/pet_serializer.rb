@@ -11,6 +11,7 @@ class PetSerializer < ActiveModel::Serializer
   :Pet_Description,
   :adopted,
   :found,
+  :Pet_Visible,
   :resources
 
   has_many :comments, as: :commenteable,  serializer: CommentSerializer

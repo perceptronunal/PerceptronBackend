@@ -20,7 +20,7 @@ class PetsController < ApplicationController
     respond_to do |format|
       format.json {render json: @pet, serializer: PetShowSerializer}
       format.pdf do
-        pdf = PetPdf.new(@user.id, adopter[:user_id])
+        pdf = PetPdf.new(@user.id)
         send_data pdf.render,
           filename: "contrato.pdf",
           type: 'application/pdf',
@@ -28,7 +28,25 @@ class PetsController < ApplicationController
       end
     end
   end
-
+  def create_resource
+    
+    resource = Resource.new(file: resource_params[:file], resourceable_type: "Pet", resourceable_id: params[:id])
+    
+    if resource.save
+      link = 'https://petshappy2.s3-us-west-1.amazonaws.com/'+ resource.file.key
+      file = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).filename
+      byte = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).byte_size
+      type = ActiveStorageBlob.find(ActiveStorageAttachment.all().last.id).content_type
+      
+      resource.update(Resource_Link: link, filename: file, bytesize: byte, Resource_Type: type)
+      
+      #render json: resource, status: :created, location: resource
+      render :json => resource, status: :created, location: resource
+    else
+      #render json: resource.errors, status: :unprocessable_entity
+      render :json => resource.errors, status: :unprocessable_entity
+    end
+  end
   # POST /pets
   def create
   
@@ -40,9 +58,9 @@ class PetsController < ApplicationController
         @connection = Connection.new(Connection_Type: request_parameter[:Connection_Type], pet_id: @pet[:id], connectable_type: Organization, connectable_id: @organization.id)
       end
       @connection.save
-      render json: @pet, status: :created, location: @pet, serializer: PetSerializer
+      render json: @connection, status: :created, location: @connection, serializer: ConnectionSerializer, include: ['connectable', 'pet', 'pet.connections','pet.comments.user']
     else
-      render json: @pet.errors, status: :unprocessable_entity
+      render json: @connection.errors, status: :unprocessable_entity
     end
   end
 
@@ -63,7 +81,7 @@ class PetsController < ApplicationController
   end
 
   def publications
-    @connections = Connection.where(Connection_Type: "Publicar")
+    @connections = Connection.where(Connection_Type: "Publicar").order('updated_at DESC')
     @connections.paginate(page: params[:page], per_page: 50)
     render json: @connections, each_serializer: ConnectionSerializer, include: ['connectable', 'pet', 'pet.connections','pet.comments.user']
   end
@@ -78,7 +96,7 @@ class PetsController < ApplicationController
   end
 
   def losts
-    @connections = Connection.where(Connection_Type: "Perdido")
+    @connections = Connection.where(Connection_Type: "Perdido").order('updated_at DESC')
     @connections.paginate(page: params[:page], per_page: 50)
     render json: @connections, each_serializer: ConnectionSerializer, include: ['connectable', 'pet', 'pet.connections','pet.comments.user']
   end
@@ -118,27 +136,18 @@ class PetsController < ApplicationController
     else
       render json: @connection.errors, status: :unprocessable_entity
     end
-  end
 
-  def confirm_adoption
-
-
-    @connection = Connection.new(Connection_Type: "Adoptado", pet_id: @pet[:id], connectable_type: adopter[:connectable_type], connectable_id: adopter[:connectable_id])
-    if @connection.save
-      render json: @connection, status: :created, location: @connection, serializer: ConnectionSerializer
-    else
-      render json: @connection.errors, status: :unprocessable_entity
-    end
-    
-    #if (@connection.connectable_type == "User")
-    #  WelcomeMailer.you_have_adopted_user(User.find(@connection.connectable_id), Pet.find(@connection.pet_id), ).deliver_now!
-    #else
-    #  WelcomeMailer.you_have_adopted_organization(Organization.find(@connection.connectable_id)).deliver_now!
-    #end
-    
     @pet.update(Pet_Visible: false)
 
+    if (@connection.connectable_type == "User")
+      WelcomeMailer.you_have_adopted_user(@user, @connection.pet, @connection.connectable).deliver_now!
+    else
+      WelcomeMailer.you_have_adopted_organization(@organization, @connection.pet, @connection.connectable).deliver_now!
+    end
+    
+
   end
+
 
   def found
     if(@user != nil)

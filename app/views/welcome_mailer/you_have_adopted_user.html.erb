@@ -153,12 +153,21 @@
 										<div style="line-height: 24px">
 											
 											<!-- ======= section text ======= -->    
-											<p>
-												You've adopted to <%= @pet.Pet_Name %>. Contact 
-												<%= @owner.User_Name%> as soon as possible.
-												<br/>
-												Have fun with your new friend.
-											</p>
+											<% if @owner.class.to_s == "User" %>
+												<p>
+													You've adopted to <%= @pet.Pet_Name %>. Contact 
+													<%= @owner.User_Name%> as soon as possible.
+													<br/>
+													Have fun with your new friend.
+												</p>
+											<% else %>
+												<p>
+													You've adopted to <%= @pet.Pet_Name %>. Contact 
+													<%= @owner.Organization_Name%> as soon as possible.
+													<br/>
+													Have fun with your new friend.
+												</p>
+											<% end %>  
 										</div>
 			        				</td>	
 								</tr>

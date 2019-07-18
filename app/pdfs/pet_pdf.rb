@@ -1,7 +1,6 @@
 class PetPdf < Prawn::Document
-    def initialize(current_user_id, adopter_user_id)
+    def initialize(current_user_id)
         @current_user = User.find(current_user_id)
-        @adopter_user = User.find(adopter_user_id)
         super(top_margin: 70)
 
         body
