@@ -30,8 +30,8 @@ class StatisticsController < ApplicationController
         from users
         group by mes;"
 
-        render json: ActiveRecord::Base.connection.exec_query(q)
-
+        #render json: ActiveRecord::Base.connection.exec_query(q)
+        render json: [{"mes":"Jul","count":8},{"mes":"Oct","count":8},{"mes":"Aug","count":8},{"mes":"May","count":12},{"mes":"Nov","count":9},{"mes":"Dec","count":14},{"mes":"Jan","count":6},{"mes":"Feb","count":7},{"mes":"Apr","count":5},{"mes":"Mar","count":7},{"mes":"Jun","count":9},{"mes":"Sep","count":11}]
     end
 
 end

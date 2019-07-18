@@ -8,7 +8,8 @@ class PetShowSerializer < ActiveModel::Serializer
   :Pet_Color,
   :Pet_Sterilized,
   :Pet_Vaccinated,
-  :Pet_Description
+  :Pet_Description,
+  :Pet_Visible
   
 
   has_many :resources, as: :resourceable

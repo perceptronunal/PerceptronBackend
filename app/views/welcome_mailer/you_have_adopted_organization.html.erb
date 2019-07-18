@@ -152,13 +152,23 @@
 									<td align="center" style="color: #737b8c; font-size: 16px; font-family: 'Varela Round', sans-serif; mso-line-height-rule: exactly; line-height: 24px;" class="resize-text text_color">
 										<div style="line-height: 24px">
 											
-											<!-- ======= section text ======= -->    
-											<p>
-												You've adopted to <%= @pet.Pet_Name %>. Contact 
-												<%= @owner.User_Name%> as soon as possible.
-												<br/>
-												Have fun with your new friend.
-											</p>
+											<!-- ======= section text ======= -->  
+											<% if @owner.class.to_s == "User" %>
+												<p>
+													You've adopted to <%= @pet.Pet_Name %>. Contact 
+													<%= @owner.User_Name%> as soon as possible.
+													<br/>
+													Have fun with your new friend.
+												</p>
+											<% else %>
+												<p>
+													You've adopted to <%= @pet.Pet_Name %>. Contact 
+													<%= @owner.Organization_Name%> as soon as possible.
+													<br/>
+													Have fun with your new friend.
+												</p>
+											<% end %>  
+
 										</div>
 			        				</td>	
 								</tr>

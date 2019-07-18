@@ -16,7 +16,7 @@
         Pet_Type: ["Perro", "Gato"].sample, 
         Pet_Name: Faker::Creature::Dog.name, 
         Pet_Gender: Faker::Creature::Dog.gender, 
-        Pet_Age: Faker::Number.between(1,96), 
+        Pet_Age: Faker::Number.between(0,15), 
         Pet_Color: Faker::Color.color_name,
         Pet_Size: Faker::Creature::Dog.size, 
         Pet_Sterilized: Faker::Boolean.boolean,

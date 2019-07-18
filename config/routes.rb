@@ -31,6 +31,7 @@ Rails.application.routes.draw do
       post 'adopt', action: :create_adoption, controller: 'pets'
       post 'adopted', action: :confirm_adoption, controller: 'pets'
       post 'found', action: :found, controller: 'pets'
+      post 'resources', action: :create_resource, controller: 'pets'
     end
     collection do
       get 'publications', action: :publications, controller: 'pets'
