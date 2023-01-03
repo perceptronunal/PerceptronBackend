@@ -68,7 +68,7 @@ gem 'prawn-table'
 gem 'omniauth-google-oauth2'
 
 #http party
-gem 'httparty', '~> 0.17.0'
+gem 'httparty', '~> 0.21.0'
 
 #storage in amazon s3
 gem "aws-sdk-s3", require: false
